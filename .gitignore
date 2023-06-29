@@ -1,0 +1,6 @@
+# Project exclude paths
+/common-utils/target/
+/service/service-admin/target/
+/service-api/target/
+/shf-model/target/
+/web/web-admin/target/
