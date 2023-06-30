@@ -12,7 +12,7 @@
         ">
 
 
-        <!--包扫描-->
+    <!--包扫描-->
     <context:component-scan base-package="com.auto"></context:component-scan>
 
     <!--开启mvc注解扫描-->
@@ -63,4 +63,6 @@
     <mvc:view-controller path="/role/save" view-name="common/successPage"></mvc:view-controller>
     <!--用户管理页-->
     <mvc:view-controller path="/admin" view-name="admin/index"></mvc:view-controller>
+    <!--到字典页-->
+    <mvc:view-controller path="/dict" view-name="dict/index"></mvc:view-controller>
 </beans>

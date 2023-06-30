@@ -11,6 +11,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>service-admin</module>
+        <module>service-shf-house</module>
+
     </modules>
 
     <properties>

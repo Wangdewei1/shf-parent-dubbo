@@ -12,7 +12,15 @@
         <module name="shf-model" />
         <module name="service-api" />
         <module name="web-admin" />
+        <module name="service-shf-house" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="service-home" target="1.8" />
+      <module name="service-hourse" target="1.8" />
+      <module name="service-house" target="1.8" />
+      <module name="service-shouse" target="1.8" />
+      <module name="service-sshouse" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
