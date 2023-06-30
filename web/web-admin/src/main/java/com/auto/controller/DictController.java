@@ -1,13 +1,11 @@
 package com.auto.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.auto.entity.Dict;
 import com.auto.result.Result;
 import com.auto.service.DictService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -29,5 +27,12 @@ public class DictController {
         return Result.ok(zNodes);
     }
 
+
+    @RequestMapping("/findDictListByParentId/{parentId}")
+    @ResponseBody
+    public Result  findDictListByParentId(@PathVariable("parentId") Long parentId){
+        List<Dict> dictList = dictService.findDictListByParentId(parentId);
+        return Result.ok(dictList);
+    }
 
 }

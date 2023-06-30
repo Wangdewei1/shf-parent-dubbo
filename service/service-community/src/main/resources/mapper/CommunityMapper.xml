@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.auto.mapper.CommunityMapper">
+
+    <!--所有字段-->
+    <sql id="columns">
+        id,name,description,province_id,city_id,area_id,plate_id,address,longitude,latitude,
+        build_years,property_price,property_company,developer,build_num,house_num,average_price,
+        create_time,update_time,is_deleted
+    </sql>
+    <!--分页-->
+    <sql id="findPageWhere">
+        <where>
+            <if test="name != null and name != ''">
+                and name like "%"#{name}"%"
+            </if>
+            <if test="areaId != null and areaId != ''">
+                and area_id=#{areaId}
+            </if>
+            <if test="plateId != null and plateId != ''">
+                and plate_id=#{plateId}
+            </if>
+            and is_deleted = 0
+        </where>
+    </sql>
+    <!--查询community分页信息-->
+    <select id="findPage" resultType="Community">
+        SELECT
+        <include refid="columns"></include>
+        FROM
+        hse_community
+        <include refid="findPageWhere"></include>
+        order by create_time desc
+    </select>
+</mapper>

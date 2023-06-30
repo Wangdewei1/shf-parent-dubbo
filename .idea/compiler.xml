@@ -7,12 +7,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="service-community" />
+        <module name="service-shf-house" />
         <module name="service-admin" />
         <module name="common-utils" />
         <module name="shf-model" />
         <module name="service-api" />
         <module name="web-admin" />
-        <module name="service-shf-house" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

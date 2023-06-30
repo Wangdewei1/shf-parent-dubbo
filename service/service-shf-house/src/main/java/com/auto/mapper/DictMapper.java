@@ -9,4 +9,6 @@ public interface DictMapper {
     List<Dict> findListByParentId(Long parentId);
     //判断是否是父节点
     Integer countIsParent(Long id);
+
+    List<Dict> findDictListByDicCode(String parentCode);
 }

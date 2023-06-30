@@ -55,4 +55,24 @@ public class DictServiceImpl implements DictService {
     public Integer countIsParent(Long id) {
         return dictMapper.countIsParent(id);
     }
+
+    /**
+     * 根据字典编码获取 字典列表信息
+     * @param parentCode
+     * @return
+     */
+    @Override
+    public List<Dict> findDictListByDicCode(String parentCode) {
+        return dictMapper.findDictListByDicCode(parentCode);
+    }
+
+    /**
+     * 根据父节点的id获取子节点的列表
+     * @param parentId
+     * @return
+     */
+    @Override
+    public List<Dict> findDictListByParentId(Long parentId) {
+        return dictMapper.findListByParentId(parentId);
+    }
 }

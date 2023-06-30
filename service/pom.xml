@@ -12,6 +12,7 @@
     <modules>
         <module>service-admin</module>
         <module>service-shf-house</module>
+        <module>service-community</module>
 
     </modules>
 

@@ -3,6 +3,7 @@
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/service/service-admin" />
+    <file type="web" url="file://$PROJECT_DIR$/service/service-community" />
     <file type="web" url="file://$PROJECT_DIR$/service/service-shf-house" />
     <file type="web" url="file://$PROJECT_DIR$/web/web-admin" />
   </component>
