@@ -8,8 +8,7 @@ import com.auto.service.DictService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -19,6 +18,11 @@ import java.util.Map;
 public class CommunityController {
 
     private static final String ACTION_COMMUNITY_INDEX = "community/index";
+    private static final String ACTION_COMMUNITY_ADD = "community/create";
+
+    public static final String PAGE_SUCCESS = "common/successPage";
+    private static final String ACTION_COMMUNITY_EDIT = "community/edit";
+    private static final String ACTION_COMMUNITY_DELETE = "redirect:/community";
     @Reference
     private CommunityService communityService;
 
@@ -47,5 +51,55 @@ public class CommunityController {
         }
         model.addAttribute("filters", filters);
         return ACTION_COMMUNITY_INDEX;
+    }
+
+    //新增小区
+    @RequestMapping("/create")
+    public String toCreatePage(Model model){
+        //1.
+        List<Dict> dictList = dictService.findDictListByDicCode("beijing");
+        //2.
+        model.addAttribute("dictList", dictList);
+        //3.
+        return ACTION_COMMUNITY_ADD;
+    }
+
+    //保存小区信息
+    @PostMapping("/save")
+    public String savaCommunity(Community community,Model model){
+        communityService.insert(community);
+        model.addAttribute("messagePage", "添加小区成功");
+        return PAGE_SUCCESS;
+    }
+
+    //修改小区
+    @GetMapping("/edit/{id}")
+    public String toEditPage(@PathVariable("id") Long id ,  Model model){
+        //查询小区信息
+        Community community = communityService.getById(id);
+
+        model.addAttribute("community",community);
+
+        //获取字典的作用  获取区域列表
+        List<Dict> areaList = dictService.findDictListByDicCode("beijing");
+
+        model.addAttribute("areaList",areaList);
+
+        return ACTION_COMMUNITY_EDIT;
+    }
+    
+    //保存修改小区信息
+    @PostMapping("/update")
+    public String updateCommunity(Community community,Model model){
+        communityService.update(community);
+        model.addAttribute("messagePage", "修改小区信息成功");
+        return PAGE_SUCCESS;
+    }
+
+    //删除小区信息
+    @GetMapping("/delete/{id}")
+    public String deleteCommunity(@PathVariable("id") Long id){
+        communityService.delete(id);
+        return ACTION_COMMUNITY_DELETE;
     }
 }

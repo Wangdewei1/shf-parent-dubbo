@@ -111,4 +111,20 @@
     });
 </script>
 </body>
+<script type="text/javascript">
+    //新增
+    $(".create").on("click",function () {
+        opt.openWin('/community/create','新增',630,430)
+    });
+    //修改
+    $(".edit").on("click",function () {
+        var id = $(this).attr("data-id");
+        opt.openWin('/community/edit/' + id,'修改',580,430);
+    });
+    //删除小区信息
+    $(".delete").on("click",function(){
+        var id = $(this).attr("data-id");
+        opt.confirm('/community/delete/'+id);
+    });
+</script>
 </html>
