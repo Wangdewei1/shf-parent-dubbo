@@ -50,4 +50,49 @@
         <include refid="findPageWhere"/>
         order by create_time desc
     </select>
+
+    <!--新增房源-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into hse_house (
+        id ,
+        community_id ,
+        name ,
+        description ,
+        total_price ,
+        unit_price ,
+        build_area ,
+        inside_area ,
+        house_type_id ,
+        floor_id ,
+        build_structure_id ,
+        direction_id ,
+        decoration_id ,
+        house_use_id ,
+        elevator_ratio ,
+        listing_date ,
+        last_trade_date ,
+        status
+        ) values (
+        #{id} ,
+        #{communityId} ,
+        #{name} ,
+        #{description} ,
+        #{totalPrice} ,
+        #{unitPrice} ,
+        #{buildArea} ,
+        #{insideArea} ,
+        #{houseTypeId} ,
+        #{floorId} ,
+        #{buildStructureId} ,
+        #{directionId} ,
+        #{decorationId} ,
+        #{houseUseId} ,
+        #{elevatorRatio} ,
+        #{listingDate} ,
+        #{lastTradeDate} ,
+        #{status}
+        )
+    </insert>
+
+    
 </mapper>

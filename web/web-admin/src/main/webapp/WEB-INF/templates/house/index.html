@@ -148,4 +148,13 @@
     </div>
 </form>
 </body>
+<script th:inline="javascript">
+    //新增房源
+    $(function () {
+        $(".create").on("click", function () {
+            opt.openWin('/house/create', '新增', 630, 430)
+        });
+    });
+    //
+</script>
 </html>

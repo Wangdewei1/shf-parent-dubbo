@@ -2,6 +2,7 @@ package com.auto.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.auto.en.DictCode;
+import com.auto.en.HouseStatus;
 import com.auto.entity.Community;
 import com.auto.entity.Dict;
 import com.auto.entity.House;
@@ -11,6 +12,8 @@ import com.auto.service.HouseService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -25,6 +28,10 @@ import java.util.Map;
 public class HouseController {
 
     private static final String ACTION_HOUSE_INDEX_PAGE = "house/index";
+
+    public static final String PAGE_SUCCESS = "common/successPage";
+
+    private static final String PAGE_CREATE = "house/create";
     @Reference
     private HouseService houseService;
 
@@ -72,5 +79,27 @@ public class HouseController {
         //9.查询所有房屋用途
         List<Dict> houseUseList = dictService.findDictListByDicCode(DictCode.HOUSEUSE.getCode());
         model.addAttribute("houseUseList", houseUseList);
+    }
+
+    /**
+     * 新增房源信息
+     */
+    @GetMapping("/create")
+    public String toAddPage(Model model){
+        //查询房源初始化信息储存到model
+        extractedHouseView(model);
+        return PAGE_CREATE;
+    }
+
+    /**
+     * 保存添加房源信息
+     */
+    @PostMapping("/save")
+    public String save(House house,Model model){
+        //未发布
+        house.setStatus(HouseStatus.UNPUBLISHED.getCode());
+        houseService.insert(house);
+        model.addAttribute("messagePage", "添加房源成功");
+        return PAGE_SUCCESS;
     }
 }
