@@ -17,4 +17,5 @@ public class HouseServiceImpl extends BaseServiceImpl<House> implements HouseSer
     public BaseMapper<House> getBaseMapper() {
         return houseMapper;
     }
+
 }

@@ -17,4 +17,22 @@ public class CommunityServiceImpl extends BaseServiceImpl<Community> implements 
     public BaseMapper<Community> getBaseMapper() {
         return communityMapper;
     }
+
+    /**
+     * 重新小区  判断是否有房源
+     * @param id
+     */
+//    @Override
+//    public void delete(Long id) {
+//        //1.判断当前小区是否有房源
+//
+//        Long houseCount = communityMapper.findHouseCountByCommunityId(id);
+//
+//        //2.如果有房源则不能删除
+//        if (houseCount > 0){
+//            throw new RuntimeException("community can not delete!!!");
+//        }
+//
+//        super.delete(id);
+//    }
 }

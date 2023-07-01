@@ -94,5 +94,77 @@
         )
     </insert>
 
-    
+    <!--根据id查询房源  回显-->
+    <select id="getById" resultType="House">
+        <include refid="columns"></include>
+        from hse_house
+        where id=#{id} and is_deleted=0
+    </select>
+
+    <!--修改房源  -->
+    <update id="update" >
+        update hse_house set
+        <if test="defaultImageUrl != null">
+            default_image_url = #{defaultImageUrl},
+        </if>
+        <if test="communityId != null">
+            community_id = #{communityId} ,
+        </if>
+        <if test="name != null">
+            name = #{name} ,
+        </if>
+        <if test="description != null">
+            description = #{description} ,
+        </if>
+        <if test="totalPrice != null">
+            total_price = #{totalPrice} ,
+        </if>
+        <if test="unitPrice != null">
+            unit_price = #{unitPrice} ,
+        </if>
+        <if test="buildArea != null">
+            build_area = #{buildArea} ,
+        </if>
+        <if test="insideArea != null">
+            inside_area = #{insideArea} ,
+        </if>
+        <if test="houseTypeId != null">
+            house_type_id = #{houseTypeId} ,
+        </if>
+        <if test="floorId != null">
+            floor_id = #{floorId} ,
+        </if>
+        <if test="buildStructureId != null">
+            build_structure_id = #{buildStructureId} ,
+        </if>
+        <if test="directionId != null">
+            direction_id = #{directionId} ,
+        </if>
+        <if test="decorationId != null">
+            decoration_id = #{decorationId} ,
+        </if>
+        <if test="houseUseId != null">
+            house_use_id = #{houseUseId} ,
+        </if>
+        <if test="elevatorRatio != null">
+            elevator_ratio = #{elevatorRatio} ,
+        </if>
+        <if test="listingDate != null">
+            listing_date = #{listingDate} ,
+        </if>
+        <if test="lastTradeDate != null">
+            last_trade_date = #{lastTradeDate} ,
+        </if>
+        <if test="status != null">
+            status = #{status} ,
+        </if>
+        update_time =  now()
+        where
+        id = #{id}
+    </update>
+
+    <!--删除房源-->
+    <update id="delete">
+        update hse_house set is_deleted=1 where id=#{id}
+    </update>
 </mapper>

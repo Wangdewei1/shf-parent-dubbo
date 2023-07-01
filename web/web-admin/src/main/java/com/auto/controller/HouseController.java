@@ -12,10 +12,7 @@ import com.auto.service.HouseService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -32,6 +29,9 @@ public class HouseController {
     public static final String PAGE_SUCCESS = "common/successPage";
 
     private static final String PAGE_CREATE = "house/create";
+    private static final String ACTION_HOUSE_EDIT_PAGE = "house/edit";
+
+    private static final String REDIRECT_ACTION_HOUSE_DELETE = "redirect:/house";
     @Reference
     private HouseService houseService;
 
@@ -102,4 +102,47 @@ public class HouseController {
         model.addAttribute("messagePage", "添加房源成功");
         return PAGE_SUCCESS;
     }
+
+    /**
+     * 根据id修改
+     */
+    @GetMapping("/edit/{id}")
+    public String toEditPage(@PathVariable("id") Long id,Model model) {
+        House house = houseService.getById(id);
+        model.addAttribute("house",house);
+        extractedHouseView(model);
+        return ACTION_HOUSE_EDIT_PAGE;
+    }
+
+    /**
+     * 保存修改数据
+     */
+    @PostMapping("/update")
+    public String update(House house,Model model){
+        houseService.update(house);
+        model.addAttribute("messagePage", "修改房源信息成功");
+        return PAGE_SUCCESS;
+    }
+
+    /**
+     *根据id删除
+     */
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable("id") Long id){
+        houseService.delete(id);
+        return REDIRECT_ACTION_HOUSE_DELETE;
+    }
+
+    /**
+     * 新增发布
+     */
+    @GetMapping("/publish/{id}/{status}")
+    public String publish(@PathVariable("id") Long id,@PathVariable("status") Integer status){
+        House house = new House();
+        house.setId(id);
+        house.setStatus(status);
+        houseService.update(house);
+        return REDIRECT_ACTION_HOUSE_DELETE;
+    }
+
 }
