@@ -18,4 +18,13 @@ public class HouseServiceImpl extends BaseServiceImpl<House> implements HouseSer
         return houseMapper;
     }
 
+    /**
+     * 根据id查询房源的数量
+      * @param id
+     * @return
+     */
+    @Override
+    public Long findHouseCountByCommunityId(Long id) {
+        return houseMapper.findHouseCountByCommunityId(id);
+    }
 }

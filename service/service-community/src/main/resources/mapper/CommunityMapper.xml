@@ -6,9 +6,10 @@
 
     <!--所有字段-->
     <sql id="columns">
-        id,name,description,province_id,city_id,area_id,plate_id,address,longitude,latitude,
-        build_years,property_price,property_company,developer,build_num,house_num,average_price,
-        create_time,update_time,is_deleted
+        hc.id, hc.name, hc.description, hc.province_id, hc.city_id, hc.area_id,
+        hc.plate_id, hc.address, hc.longitude, hc.latitude, hc.build_years, hc.property_price,
+        hc.property_company, hc.developer, hc.build_num, hc.house_num, hc.average_price, hc.create_time,
+        hc.update_time, hc.is_deleted
     </sql>
     <!--分页-->
     <sql id="findPageWhere">
@@ -28,11 +29,13 @@
     <!--查询community分页信息-->
     <select id="findPage" resultType="Community">
         SELECT
-        <include refid="columns"></include>
+        <include refid="columns"></include>,
+        (SELECT name FROM hse_dict WHERE id = hc.area_id) AS areaName,
+        (SELECT name FROM hse_dict WHERE id = hc.plate_id) AS plateName
         FROM
-        hse_community
+        hse_community hc
         <include refid="findPageWhere"></include>
-        order by create_time desc
+        order by hc.create_time desc
     </select>
     <!--新增小区信息-->
     <insert id="insert">
@@ -47,8 +50,8 @@
         SELECT
         <include refid="columns"></include>
         FROM
-        hse_community
-        WHERE id=#{id} and is_deleted=0
+        hse_community hc
+        WHERE hc.id=#{id} and hc.is_deleted=0
     </select>
     <!--保存修改-->
     <update id="update">

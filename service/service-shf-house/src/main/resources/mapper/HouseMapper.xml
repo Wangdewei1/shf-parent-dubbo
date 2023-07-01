@@ -167,4 +167,10 @@
     <update id="delete">
         update hse_house set is_deleted=1 where id=#{id}
     </update>
+
+    <!--根据id查询房源的数量-->
+    <select id="findHouseCountByCommunityId" resultType="long">
+        SELECT COUNT(*) FROM hse_house
+        WHERE community_id=#{communityId} AND is_deleted=0
+    </select>
 </mapper>
