@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.auto.mapper.HouseMapper">
+    <!--所有字段-->
+    <sql id="columns">
+        select id,community_id,name,description,total_price,unit_price,build_area,inside_area,default_image_url,
+        house_type_id,floor_id,build_structure_id,direction_id,decoration_id,house_use_id,
+        elevator_ratio,listing_date,last_trade_date,status,create_time,update_time,is_deleted
+    </sql>
+    <!--分页条件-->
+    <sql id="findPageWhere">
+        <where>
+            <if test="name !=null and name != ''">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="communityId != null and communityId != ''">
+                and community_id = #{communityId}
+            </if>
+            <if test="houseTypeId != null and houseTypeId != ''">
+                and house_type_id = #{houseTypeId}
+            </if>
+            <if test="floorId != null and floorId != ''">
+                and floor_id = #{floorId}
+            </if>
+            <if test="buildStructureId != null and buildStructureId != ''">
+                and build_structure_id = #{buildStructureId}
+            </if>
+            <if test="communityId != null and communityId != ''">
+                and community_id = #{communityId}
+            </if>
+            <if test="directionId != null and directionId != ''">
+                and direction_id = #{directionId}
+            </if>
+            <if test="decorationId != null and decorationId != ''">
+                and decoration_id = #{decorationId}
+            </if>
+            <if test="houseUseId != null and houseUseId != ''">
+                and house_use_id = #{houseUseId}
+            </if>
+            and is_deleted = 0
+        </where>
+    </sql>
+
+    <!--分页获取房源信息-->
+    <select id="findPage" resultType="House">
+        <include refid="columns" />
+        from hse_house hh
+        <include refid="findPageWhere"/>
+        order by create_time desc
+    </select>
+</mapper>

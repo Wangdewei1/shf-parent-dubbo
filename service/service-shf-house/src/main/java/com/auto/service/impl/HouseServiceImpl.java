@@ -8,7 +8,7 @@ import com.auto.mapper.HouseMapper;
 import com.auto.service.HouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Service
+@Service(interfaceClass = HouseService.class)
 public class HouseServiceImpl extends BaseServiceImpl<House> implements HouseService {
     @Autowired
     private HouseMapper houseMapper;

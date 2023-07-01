@@ -113,4 +113,14 @@
         where
         id = #{id}
     </update>
+
+
+    <!--查询所有小区信息-->
+    <select id="findAll" resultType="Community">
+        select id,name
+        from hse_community
+        where
+        is_deleted = 0
+        order by id desc
+    </select>
 </mapper>
