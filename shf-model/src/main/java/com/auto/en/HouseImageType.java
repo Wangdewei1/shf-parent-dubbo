@@ -15,7 +15,8 @@ public enum HouseImageType {
     private String message;
 
     HouseImageType(String message,Integer code){
-
+        this.message = message;
+        this.type = code;
     }
 
     public Integer getType() {
