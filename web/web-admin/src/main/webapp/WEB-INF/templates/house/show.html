@@ -202,5 +202,12 @@
     $("#upload2").on("click", function () {
         opt.openWin('/houseImage/uploadShow/[[${house.id}]]/2', '上传房产图片', 580, 430);
     });
+    //绑定删除按钮
+    //给删除图片按钮绑定点击事件
+    $(".deleteImages").on("click",function(){
+        //获取要删除的图片的id
+        var id = $(this).attr("data-id");
+        opt.confirm('/houseImage/delete/[[${house.id}]]/'+id);
+    });
 </script>
 </html>

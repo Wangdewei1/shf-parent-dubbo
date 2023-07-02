@@ -33,4 +33,26 @@
         INSERT INTO hse_house_image(house_id,image_name,image_url,type)
         VALUES(#{houseId},#{imageName},#{imageUrl},#{type})
     </insert>
+
+    <!--根据id查询图片信息-->
+    <select id="getById" resultType="HouseImage">
+        SELECT
+        <include refid="columns"></include>
+        FROM
+        hse_house_image
+        WHERE
+        id = #{id}
+        AND
+        is_deleted = 0
+    </select>
+
+    <!--将图片信息从数据库中删除-->
+    <update id="delete">
+        UPDATE
+        hse_house_image
+        SET
+        is_deleted = 1
+        WHERE
+        id = #{id}
+    </update>
 </mapper>

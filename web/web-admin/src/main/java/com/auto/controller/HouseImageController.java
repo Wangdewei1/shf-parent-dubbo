@@ -22,6 +22,7 @@ import java.io.IOException;
 @Controller
 @RequestMapping("/houseImage")
 public class HouseImageController {
+    private static final String ACTION_UPLOAD_DELETE_SHOW = "redirect:/house/";
     @Reference
     private HouseImageService houseImageService;
 
@@ -88,4 +89,30 @@ public class HouseImageController {
         }
         return Result.ok();
     }
+
+
+    /**
+     * 删除图片
+     */
+    @GetMapping("/delete/{houseId}/{id}")
+    public String deleteHouseImage(@PathVariable("houseId") Long houseId,
+                                   @PathVariable("id") Long id){
+        //根据图片的id查询图片的信息
+        HouseImage houseImage = houseImageService.getById(id);
+        //从七牛云中删除图片
+        QiniuUtils.deleteFileFromQiniu(houseImage.getImageName());
+        //从数据库中删除图片
+        houseImageService.delete(id);
+        //判断当前删除的图片，是否是默认的图片
+        House house = houseService.getById(houseId);
+        if (houseImage.getImageUrl().equals(house.getDefaultImageUrl())){
+            //如果是则给当前房源默认图片路径 设置一个字符串
+            house.setDefaultImageUrl("null");
+            houseService.update(house);
+        }
+        //重定向show + id
+        //注意根据id，重定向时要加/
+        return ACTION_UPLOAD_DELETE_SHOW + houseId;
+    }
+
 }
