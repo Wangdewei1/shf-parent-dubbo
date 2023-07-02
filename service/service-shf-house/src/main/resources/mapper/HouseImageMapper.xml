@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.auto.mapper.HouseImageMapper">
+    <sql id="columns">
+        id,
+        house_id,
+        image_name,
+        image_url,
+        type,
+        create_time,
+        update_time,
+        is_deleted
+    </sql>
+
+    <!--根据房源id和房源类型（1，2）查询图片信息-->
+    <select id="findHouseImageList" resultType="HouseImage">
+        SELECT
+        <include refid="columns"></include>
+        FROM
+        hse_house_image
+        WHERE
+        house_id = #{houseId}
+        AND
+        type = #{type}
+        AND
+        is_deleted = 0
+    </select>
+</mapper>

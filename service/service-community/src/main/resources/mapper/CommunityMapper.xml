@@ -48,7 +48,9 @@
     <!--回显小区-->
     <select id="getById" resultType="Community">
         SELECT
-        <include refid="columns"></include>
+        <include refid="columns"></include>,
+        (SELECT name FROM hse_dict WHERE id = hc.area_id) areaName,
+        (SELECT name FROM hse_dict WHERE id = hc.plate_id) plateName
         FROM
         hse_community hc
         WHERE hc.id=#{id} and hc.is_deleted=0
@@ -125,5 +127,16 @@
         where
         is_deleted = 0
         order by id desc
+    </select>
+
+    <!--根据想去id获取小区详情-->
+    <select id="findCommunityList" resultType="Community">
+        SELECT
+        <include refid="columns"></include>
+        FROM
+        hse_community hc
+        WHERE id = #{communityId}
+        AND
+        is_deleted = 0
     </select>
 </mapper>

@@ -17,9 +17,9 @@ import com.qiniu.util.Auth;
  * 日期2022-03-27  19:52
  */
 public class QiniuUtils {
-    private static String accessKey = "hP5yNAjiCwhqmaQgm_y1U3a-_aYXpUVLU8b78Vvc";
-    private static String secretKey = "3QtbSyLxLXBiyhj7LKifrjsWN8qdBguAZvBZg_P3";
-    private static String bucket = "shfsz0730-leevi";
+    private static String accessKey = "J2p-OTX87oFdQJhCfsSibaSf9cIVI5ahPmIR3UAC";
+    private static String secretKey = "Ccbl0alOzGElZlaZMPZPXz9j2wUjq9DZc0S7NiJ_";
+    private static String bucket = "shf-sz-photo";
 
     /**
      * 上传图片到七牛云
@@ -103,6 +103,6 @@ public class QiniuUtils {
      * @return
      */
     public static String getUrl(String filePath) {
-        return "http://rklhts4e7.hn-bkt.clouddn.com/" + filePath;
+        return "http://rx5lypsnu.hn-bkt.clouddn.com/" + filePath;
     }
 }

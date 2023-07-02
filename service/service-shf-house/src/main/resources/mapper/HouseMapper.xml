@@ -96,8 +96,14 @@
 
     <!--根据id查询房源  回显-->
     <select id="getById" resultType="House">
-        <include refid="columns"></include>
-        from hse_house
+        <include refid="columns"></include>,
+        (SELECT name FROM hse_dict WHERE id = hh.house_type_id) houseTypeName,
+        (SELECT name FROM hse_dict WHERE id = hh.floor_id) floorName,
+        (SELECT name FROM hse_dict WHERE id = hh.build_structure_id) buildStructureName,
+        (SELECT name FROM hse_dict WHERE id = hh.direction_id) directionName,
+        (SELECT name FROM hse_dict WHERE id = hh.decoration_id) decorationName,
+        (SELECT name FROM hse_dict WHERE id = hh.house_use_id) houseUseName
+        FROM hse_house hh
         where id=#{id} and is_deleted=0
     </select>
 

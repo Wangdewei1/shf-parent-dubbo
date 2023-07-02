@@ -2,13 +2,10 @@ package com.auto.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.auto.en.DictCode;
+import com.auto.en.HouseImageType;
 import com.auto.en.HouseStatus;
-import com.auto.entity.Community;
-import com.auto.entity.Dict;
-import com.auto.entity.House;
-import com.auto.service.CommunityService;
-import com.auto.service.DictService;
-import com.auto.service.HouseService;
+import com.auto.entity.*;
+import com.auto.service.*;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +29,7 @@ public class HouseController {
     private static final String ACTION_HOUSE_EDIT_PAGE = "house/edit";
 
     private static final String REDIRECT_ACTION_HOUSE_DELETE = "redirect:/house";
+    private static final String ACTION_SHOW_PAGE = "house/show";
     @Reference
     private HouseService houseService;
 
@@ -40,6 +38,15 @@ public class HouseController {
 
     @Reference
     private DictService dictService;
+
+    @Reference
+    private HouseImageService houseImageService;
+
+    @Reference
+    private HouseBrokerService houseBrokerService;
+
+    @Reference
+    private HouseUserService houseUserService;
 
     //加@RequestParamter 是防止Map被当成逻辑视图
     @RequestMapping
@@ -145,4 +152,42 @@ public class HouseController {
         return REDIRECT_ACTION_HOUSE_DELETE;
     }
 
+    /**
+     * 根据房源id查询房源图片信息
+     */
+    @GetMapping("/{houseId}")
+    public String findHouseImageInfo(@PathVariable("houseId") Long houseId,
+                                     Model model){
+
+        //调用房源详情
+        getHouseImageInfo(houseId, model);
+        //7.返回到详情页面的逻辑视图
+        return ACTION_SHOW_PAGE;
+    }
+
+    /**
+     * 封装 房源详情信息
+     * @param houseId
+     * @param model
+     */
+    private void getHouseImageInfo(Long houseId, Model model) {
+        //1.根据房源id查询房源信息 并保存到请求域中
+        House house = houseService.getById(houseId);
+        model.addAttribute("house",house);
+        //2.根据小区id查询小区详情 并保存到请求域中
+        Community community = communityService.getById(house.getCommunityId());
+        model.addAttribute("community",community);
+        //3.分局房源id和房源图片类型 1.房源图片 2.房产图片  查询 房源图片列表 并保存到请求域中
+        List<HouseImage> houseImage1List = houseImageService.findHouseImageList(houseId, HouseImageType.HOUSE_IMAGE_TYPE.getType());
+        model.addAttribute("houseImage1List",houseImage1List);
+        //4.分局房源id和房源图片类型 1.房源图片 2.房产图片  查询 房产图片列表 并保存到请求域中
+        List<HouseImage> houseImage2List = houseImageService.findHouseImageList(houseId, HouseImageType.HOUSE_IMAGE_TYPE_PROPERTY.getType());
+        model.addAttribute("houseImage2List",houseImage2List);
+        //5.根据房源id查询经纪人 列表
+        List<HouseBroker> houseBrokerList = houseBrokerService.findHouseBrokerList(houseId);
+        model.addAttribute("houseBrokerList",houseBrokerList);
+        //6.根据房源id查询房东信息  列表 并保存到请求域中
+        List<HouseUser> houseUserList = houseUserService.findHouseUserList(houseId);
+        model.addAttribute("houseUserList",houseUserList);
+    }
 }

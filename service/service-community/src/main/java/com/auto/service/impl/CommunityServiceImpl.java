@@ -10,6 +10,8 @@ import com.auto.service.CommunityService;
 import com.auto.service.HouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 @Service(interfaceClass = CommunityService.class)
 public class CommunityServiceImpl extends BaseServiceImpl<Community> implements CommunityService {
     @Autowired
@@ -38,5 +40,15 @@ public class CommunityServiceImpl extends BaseServiceImpl<Community> implements 
         }
         //3.否则删除
         super.delete(id);
+    }
+
+    /**
+     * 根据用户小区id获取详情
+     * @param communityId
+     * @return
+     */
+    @Override
+    public List<Community> findCommunityList(Long communityId) {
+        return communityMapper.findCommunityList(communityId);
     }
 }
