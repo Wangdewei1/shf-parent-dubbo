@@ -77,6 +77,9 @@
             <if test="name != null and name != ''">
                 name = #{name},
             </if>
+            <if test="headUrl != null and headUrl != ''">
+                head_url = #{headUrl},
+            </if>
         </set>
         WHERE id = #{id}
         AND
@@ -91,4 +94,5 @@
         </set>
         WHERE id = #{id}
     </update>
+
 </mapper>

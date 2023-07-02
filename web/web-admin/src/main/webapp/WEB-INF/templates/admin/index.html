@@ -96,6 +96,7 @@
                                 <td class="text-center">
                                     <a class="edit" th:attr="data-id=${item.id}">修改</a>
                                     <a class="delete" th:attr="data-id=${item.id}">删除</a>
+                                    <a class="upload" th:attr="data-id=${item.id}">上传头像</a>
                                 </td>
                             </tr>
                             </tbody>
@@ -125,6 +126,11 @@
         $(".delete").on("click", function () {
             var id = $(this).attr("data-id");
             opt.confirm('/admin/delete/' + id);
+        });
+        //上传头像
+        $(".upload").on("click",function(){
+            var id = $(this).attr("data-id");
+            opt.openWin('/admin/uploadShow/'+id,'上传头像',580,300);
         });
     });
 </script>
