@@ -27,4 +27,10 @@
         AND
         is_deleted = 0
     </select>
+
+    <!--上传图片-->
+    <insert id="insert">
+        INSERT INTO hse_house_image(house_id,image_name,image_url,type)
+        VALUES(#{houseId},#{imageName},#{imageUrl},#{type})
+    </insert>
 </mapper>

@@ -193,4 +193,14 @@
     </div>
 </div>
 </body>
+<script th:inline="javascript">
+    //绑定上传
+    $("#upload1").on("click", function () {
+        opt.openWin('/houseImage/uploadShow/[[${house.id}]]/1', '上传房源图片', 580, 430);
+    });
+
+    $("#upload2").on("click", function () {
+        opt.openWin('/houseImage/uploadShow/[[${house.id}]]/2', '上传房产图片', 580, 430);
+    });
+</script>
 </html>
