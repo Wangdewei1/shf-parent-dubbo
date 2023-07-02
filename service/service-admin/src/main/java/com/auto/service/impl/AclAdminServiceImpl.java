@@ -8,6 +8,8 @@ import com.auto.mapper.AclAdminMapper;
 import com.auto.service.AclAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 @Service(interfaceClass = AclAdminService.class)
 public class AclAdminServiceImpl extends BaseServiceImpl<Admin> implements AclAdminService {
     @Autowired
@@ -15,5 +17,15 @@ public class AclAdminServiceImpl extends BaseServiceImpl<Admin> implements AclAd
     @Override
     public BaseMapper<Admin> getBaseMapper() {
         return aclAdminMapper;
+    }
+
+    /**
+     * 根据houseId查询不是该房源的经纪人列表
+     * @param houseId
+     * @return
+     */
+    @Override
+    public List<Admin> findNotAdminListByHouseId(Long houseId) {
+        return aclAdminMapper.findNotAdminListByHouseId(houseId);
     }
 }

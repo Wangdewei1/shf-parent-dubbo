@@ -95,4 +95,14 @@
         WHERE id = #{id}
     </update>
 
+    <!--查询不是改房源的经纪人列表-->
+    <select id="findNotAdminListByHouseId" resultType="Admin">
+        SELECT
+        <include refid="Base_User_Filed"></include>
+        FROM acl_admin
+        WHERE
+        id NOT IN (SELECT broker_id FROM hse_house_broker WHERE house_id = #{houseId} and is_deleted = 0)
+        and is_deleted = 0
+    </select>
+
 </mapper>

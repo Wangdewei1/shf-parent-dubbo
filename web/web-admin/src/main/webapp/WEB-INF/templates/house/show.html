@@ -209,5 +209,21 @@
         var id = $(this).attr("data-id");
         opt.confirm('/houseImage/delete/[[${house.id}]]/'+id);
     });
+    //新增经纪人
+    $(function(){
+        $(".createBroker").on("click",function () {
+            opt.openWin('/houseBroker/create?houseId=[[${house.id}]]','新增经纪人',630,300)
+        });
+    });
+    //修改经纪人
+    $(".editBroker").on("click",function () {
+        var id = $(this).attr("data-id");
+        opt.openWin('/houseBroker/edit/' + id,'修改经纪人',630,300);
+    });
+    //删除经纪人
+    $(".deleteBroker").on("click",function(){
+        var id = $(this).attr("data-id");
+        opt.confirm('/houseBroker/delete/[[${house.id}]]/'+id);
+    });
 </script>
 </html>
