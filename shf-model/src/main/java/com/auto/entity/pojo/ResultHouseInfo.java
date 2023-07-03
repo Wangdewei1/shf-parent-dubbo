@@ -26,4 +26,6 @@ public class ResultHouseInfo implements Serializable {
     private List<HouseImage> houseImage1List;
 
     private List<HouseUser> houseUserList;
+
+    private Boolean isFollow;
 }

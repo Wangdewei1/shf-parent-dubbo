@@ -97,6 +97,6 @@ public class HouseServiceImpl extends BaseServiceImpl<House> implements HouseSer
 
         Community community = communityService.getById(house.getCommunityId());
 
-        return new ResultHouseInfo(house, community, houseBrokerList, houseImage1List, houseUserList);
+        return new ResultHouseInfo(house, community, houseBrokerList, houseImage1List, houseUserList,false);
     }
 }

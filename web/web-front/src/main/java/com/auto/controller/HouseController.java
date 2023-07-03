@@ -21,17 +21,6 @@ public class HouseController {
     @Reference
     private HouseService houseService;
 
-    @Reference
-    private HouseImageService houseImageService;
-
-    @Reference
-    private HouseBrokerService houseBrokerService;
-
-    @Reference
-    private CommunityService communityService;
-
-    @Reference
-    private HouseUserService houseUserService;
 
     /**
      * 查询前台首页信息
