@@ -1,12 +1,19 @@
 package com.auto.service.impl;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.auto.base.BaseMapper;
 import com.auto.base.BaseServiceImpl;
-import com.auto.entity.House;
+import com.auto.en.HouseImageType;
+import com.auto.entity.*;
+import com.auto.entity.pojo.ResultHouseInfo;
 import com.auto.entity.vo.HouseQueryVo;
 import com.auto.entity.vo.HouseVo;
+import com.auto.mapper.HouseBrokerMapper;
+import com.auto.mapper.HouseImageMapper;
 import com.auto.mapper.HouseMapper;
+import com.auto.mapper.HouseUserMapper;
+import com.auto.service.CommunityService;
 import com.auto.service.HouseService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -22,6 +29,18 @@ public class HouseServiceImpl extends BaseServiceImpl<House> implements HouseSer
     @Autowired
     private HouseMapper houseMapper;
 
+    @Autowired
+    private HouseImageMapper houseImageMapper;
+
+    @Autowired
+    private HouseBrokerMapper houseBrokerMapper;
+
+    @Reference
+    private CommunityService communityService;
+
+    @Autowired
+    private HouseUserMapper houseUserMapper;
+
     @Override
     public BaseMapper<House> getBaseMapper() {
         return houseMapper;
@@ -29,7 +48,8 @@ public class HouseServiceImpl extends BaseServiceImpl<House> implements HouseSer
 
     /**
      * 根据id查询房源的数量
-      * @param id
+     *
+     * @param id
      * @return
      */
     @Override
@@ -39,6 +59,7 @@ public class HouseServiceImpl extends BaseServiceImpl<House> implements HouseSer
 
     /**
      * 根据 页码 每页显示数 查询房源信息
+     *
      * @param pageNum
      * @param pageSize
      * @param houseQueryVo
@@ -54,5 +75,28 @@ public class HouseServiceImpl extends BaseServiceImpl<House> implements HouseSer
         List<HouseVo> page = houseMapper.findListPage(houseQueryVo);
 
         return new PageInfo<>(page);
+    }
+
+    /**
+     * 封装房源详情的方法
+     *
+     * @param houseId
+     * @return
+     */
+    @Override
+    public ResultHouseInfo findHouseInfos(Long houseId) {
+
+        //1.
+        House house = houseMapper.getById(houseId);
+
+        List<HouseImage> houseImage1List = houseImageMapper.findHouseImageList(houseId, HouseImageType.HOUSE_IMAGE_TYPE.getType());
+
+        List<HouseBroker> houseBrokerList = houseBrokerMapper.findHouseBrokerList(houseId);
+
+        List<HouseUser> houseUserList = houseUserMapper.findHouseUserList(houseId);
+
+        Community community = communityService.getById(house.getCommunityId());
+
+        return new ResultHouseInfo(house, community, houseBrokerList, houseImage1List, houseUserList);
     }
 }
