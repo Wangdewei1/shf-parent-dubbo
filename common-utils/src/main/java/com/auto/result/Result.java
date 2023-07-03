@@ -1,10 +1,13 @@
 package com.auto.result;
 
+import java.io.Serializable;
+
 /**
  * 全局统一返回结果类
  *
  */
-public class Result<T> {
+public class Result<T> implements Serializable {
+    public static final Long serialVersionUID = 1L;
 
     // 返回码
     private Integer code;

@@ -3,12 +3,15 @@ package com.auto.entity.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * 注册对象
  */
 @Data
-public class RegisterVo {
+public class RegisterVo implements Serializable {
 
+    public static final Long serialVersionUID = 1L;
     // 昵称
     private String nickName;
 

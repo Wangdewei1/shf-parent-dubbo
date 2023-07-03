@@ -44,6 +44,8 @@
         <dubbo.version>2.6.0</dubbo.version>
         <zookeeper.version>3.4.7</zookeeper.version>
         <zkclient.version>0.1</zkclient.version>
+        <!--引入redis-->
+        <jedis.version>2.9.0</jedis.version>
     </properties>
 
     <!-- 依赖管理 -->
@@ -230,6 +232,15 @@
                 <artifactId>qiniu-java-sdk</artifactId>
                 <version>${qiniu.version}</version>
             </dependency>
+
+            <!--redis-->
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${jedis.version}</version>
+            </dependency>
+
+
 
             <!-- spring security安全框架 -->
             <dependency>

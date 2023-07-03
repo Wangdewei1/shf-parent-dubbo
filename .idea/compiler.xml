@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="service-community" />
         <module name="web-front" />
+        <module name="service-user" />
         <module name="service-shf-house" />
         <module name="service-admin" />
         <module name="common-utils" />

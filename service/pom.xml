@@ -13,6 +13,7 @@
         <module>service-admin</module>
         <module>service-shf-house</module>
         <module>service-community</module>
+        <module>service-user</module>
 
     </modules>
 

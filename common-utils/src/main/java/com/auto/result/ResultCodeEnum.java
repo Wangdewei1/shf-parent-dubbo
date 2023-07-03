@@ -22,6 +22,7 @@ public enum ResultCodeEnum {
     ACCOUNT_ERROR(210, "账号不正确"),
     PASSWORD_ERROR(210, "密码不正确"),
     ACCOUNT_LOCK_ERROR(210, "该账户已被锁定"),
+    NICK_NAME_REGISTER_ERROR(210,"该名称已注册")
     ;
 
     private Integer code;
