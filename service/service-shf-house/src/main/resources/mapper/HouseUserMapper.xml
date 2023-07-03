@@ -25,4 +25,63 @@
         AND
         is_deleted = 0
     </select>
+
+    <!--新增房东-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into hse_house_user (
+        id ,
+        house_id ,
+        name ,
+        phone ,
+        sex ,
+        id_no
+        ) values (
+        #{id} ,
+        #{houseId} ,
+        #{name} ,
+        #{phone} ,
+        #{sex} ,
+        #{idNo}
+        )
+    </insert>
+
+    <!--根据id查询房东信息-->
+    <select id="getById" resultType="HouseUser">
+        SELECT
+        <include refid="columns"></include>
+        FROM hse_house_user
+        WHERE id=#{id} and is_deleted=0
+    </select>
+
+    <!--保存修改房东信息-->
+    <update id="update" >
+        update hse_house_user set
+        <if test="houseId != null and houseId != ''">
+            house_id = #{houseId} ,
+        </if>
+        <if test="name != null and name != ''">
+            name = #{name} ,
+        </if>
+        <if test="phone != null and phone != ''">
+            phone = #{phone} ,
+        </if>
+        <if test="sex != null and sex != ''">
+            sex = #{sex} ,
+        </if>
+        <if test="idNo != null and idNo != ''">
+            id_no = #{idNo} ,
+        </if>
+        update_time =  now()
+        where
+        id = #{id}
+    </update>
+
+    <!--删除房东信息-->
+    <update id="delete">
+        update hse_house_user set
+        update_time = now() ,
+        is_deleted = 1
+        where
+        id = #{id}
+    </update>
 </mapper>

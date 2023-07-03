@@ -225,5 +225,19 @@
         var id = $(this).attr("data-id");
         opt.confirm('/houseBroker/delete/[[${house.id}]]/'+id);
     });
+    //新增房东
+    $(".createUser").on("click",function () {
+        opt.openWin('/houseUser/create?houseId=[[${house.id}]]','新增房东',630,430)
+    });
+    //修改房东
+    $(".editUser").on("click",function () {
+        var id = $(this).attr("data-id");
+        opt.openWin('/houseUser/edit/' + id,'修改房东',630,430);
+    });
+    //删除房东
+    $(".deleteUser").on("click",function(){
+        var id = $(this).attr("data-id");
+        opt.confirm('/houseUser/delete/[[${house.id}]]/'+id);
+    });
 </script>
 </html>
