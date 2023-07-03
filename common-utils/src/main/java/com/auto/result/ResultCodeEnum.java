@@ -22,7 +22,9 @@ public enum ResultCodeEnum {
     ACCOUNT_ERROR(210, "账号不正确"),
     PASSWORD_ERROR(210, "密码不正确"),
     ACCOUNT_LOCK_ERROR(210, "该账户已被锁定"),
-    NICK_NAME_REGISTER_ERROR(210,"该名称已注册")
+    NICK_NAME_REGISTER_ERROR(210,"该名称已注册"),
+    NOT_SEND_MORE_THAN_VERIFICATION_TWICE(210,"验证码1分钟内不能重复获取"),
+    MESSAGE_SEND_MAX_COUNT(210,"每天只能发送验证码5次")
     ;
 
     private Integer code;
