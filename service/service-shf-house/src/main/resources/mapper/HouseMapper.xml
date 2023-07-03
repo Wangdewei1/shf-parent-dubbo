@@ -179,4 +179,84 @@
         SELECT COUNT(*) FROM hse_house
         WHERE community_id=#{communityId} AND is_deleted=0
     </select>
+
+    <!--前端分页查询-->
+    <sql id="Front_Page_Filed">
+        SELECT
+        hh.build_area,
+        hh.create_time,
+        hh.direction_id,
+        hh.floor_id,
+        hh.house_type_id,
+        hh.id,
+        hh.name,
+        hh.total_price,
+        hh.unit_price,
+        hc.name communityName,
+        hh.default_image_url,
+        (SELECT name FROM hse_dict WHERE id = hh.floor_id AND is_deleted = 0) floorName ,
+        (SELECT name FROM hse_dict WHERE id = hh.build_structure_id AND is_deleted = 0) buildStructureName ,
+        (SELECT name FROM hse_dict WHERE id = hh.direction_id AND is_deleted = 0) directionName
+    </sql>
+
+    <!--        (SELECT name FROM hse_dict WHERE id = #{plateId}) plateName ,-->
+    <!--        (SELECT name FROM hse_dict WHERE id = #{houseTypeId}) houseTypeName ,-->
+    <!--        (SELECT name FROM hse_dict WHERE id = #{decorationId}) decorationName ,-->
+    <!--        (SELECT name FROM hse_dict WHERE id = #{houseUseId}) houseUseName ,-->
+
+    <!--分页findListPage 条件-->
+    <sql id="findListPageWhere">
+        <where>
+            <if test="areaId != null and areaId != ''">
+                AND hc.area_id = #{areaId}
+            </if>
+            <if test="plateId != null and plateId != ''">
+                AND hc.plate_id = #{plateId}
+            </if>
+            AND hc.is_deleted = 0
+            <if test="houseTypeId != null and houseTypeId != ''">
+                AND hh.house_type_id = #{houseTypeId}
+            </if>
+            <if test="decorationId != null and decorationId != ''">
+                AND hh.decoration_id = #{decorationId}
+            </if>
+            
+            <if test="buildStructureId != null and buildStructureId != ''">
+                AND hh.build_structure_id = #{buildStructureId}
+            </if>
+            <if test="directionId != null and directionId != ''">
+                AND hh.direction_id = #{directionId}
+            </if>
+            <if test="houseUseId != null and houseUseId != ''">
+                AND hh.house_use_id = #{houseUseId}
+            </if>
+            AND hh.status = 1 AND hh.is_deleted = 0
+        </where>
+    </sql>
+
+    <!--findListPage 顺序-->
+    <sql id="findListPageSortOrderBy">
+        ORDER BY
+        <if test="defaultSort != null">
+            hh.id ASC
+        </if>
+        <if test="priceSort != null">
+            hh.total_price DESC
+        </if>
+        <if test="timeSort != null">
+            hh.create_time DESC
+        </if>
+    </sql>
+
+    <!--根据分页条件查找房源-->
+    <select id="findListPage" resultType="HouseVo">
+        <include refid="Front_Page_Filed"></include>
+        FROM
+        hse_house hh LEFT JOIN hse_community hc
+        ON
+        hh.community_id = hc.id
+        <include refid="findListPageWhere"></include>
+        <include refid="findListPageSortOrderBy"></include>
+
+    </select>
 </mapper>

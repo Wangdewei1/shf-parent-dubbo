@@ -11,6 +11,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>web-admin</module>
+        <module>web-front</module>
     </modules>
 
     <properties>
