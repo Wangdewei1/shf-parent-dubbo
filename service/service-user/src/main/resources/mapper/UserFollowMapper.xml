@@ -97,4 +97,28 @@
         is_deleted = 0
     </update>
 
+    <!--取消关注-->
+    <update id="delete">
+        UPDATE
+        user_follow
+        SET
+        is_deleted = #{isDeleted}
+        WHERE
+        id = #{id}
+        AND
+        is_deleted = 0
+    </update>
+
+    <!--根据用户id查询-->
+    <select id="getById" resultType="UserFollow">
+        SELECT
+        <include refid="base_columns"></include>
+        FROM
+        user_follow
+        WHERE
+        user_id = #{userId}
+        AND
+        is_deleted = 0
+    </select>
+
 </mapper>

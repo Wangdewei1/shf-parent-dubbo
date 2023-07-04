@@ -86,4 +86,11 @@ public class UserFollowServiceImpl extends BaseServiceImpl<UserFollow> implement
         //返回分页结果
         return new PageInfo<>(userFollowVoList, PageConstant.NAVIGATE_PAGES);
     }
+
+    /**
+     * 取消关注
+     */
+    public void delete(UserFollow userFollow) {
+        userFollowMapper.delete(userFollow);
+    }
 }

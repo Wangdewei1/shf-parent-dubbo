@@ -2,15 +2,13 @@ package com.auto.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.auto.constant.LoginUserInfoConstant;
+import com.auto.entity.UserFollow;
 import com.auto.entity.UserInfo;
 import com.auto.entity.vo.UserFollowVo;
 import com.auto.result.Result;
 import com.auto.service.UserFollowService;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -55,5 +53,21 @@ public class UserFollowController {
         PageInfo<UserFollowVo> pageInfo = userFollowService.findUserFollowListPage(pageNum,pageSize,userInfo.getId());
         //3.将分页结果返回给前端
         return Result.ok(pageInfo);
+    }
+
+    /**
+     * 取消关注房源
+     */
+    @GetMapping("/auth/cancelFollow/{id}")
+    public Result cancelFollow(@PathVariable("id") Long id){
+
+        //1.创建UserFollow对象，并更新
+        UserFollow userFollow = new UserFollow();
+        //2.将关注id设置到新创建的对象 , 删除设置为1
+        userFollow.setId(id);
+        userFollow.setIsDeleted(1);
+        //3.取消关注
+        userFollowService.delete(userFollow);
+        return Result.ok();
     }
 }

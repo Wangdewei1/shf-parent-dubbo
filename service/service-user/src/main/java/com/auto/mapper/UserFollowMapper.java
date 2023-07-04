@@ -14,4 +14,6 @@ public interface UserFollowMapper extends BaseMapper<UserFollow> {
     UserFollow findUserFollowByUserIdAndHouseId(@Param("userId") Long id,@Param("houseId") Long houseId);
 
     List<UserFollowVo> findUserFollowListPage(@Param("userId") Long id);
+
+    void delete(UserFollow userFollow);
 }

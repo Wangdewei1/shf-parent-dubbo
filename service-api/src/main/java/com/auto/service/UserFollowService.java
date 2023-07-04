@@ -13,4 +13,6 @@ public interface UserFollowService extends BaseService<UserFollow> {
     UserFollow findUserFollowByUserIdAndHouseId(Long houseId,UserInfo userInfo);
 
     PageInfo<UserFollowVo> findUserFollowListPage(Integer pageNum, Integer pageSize, Long id);
+
+    void delete(UserFollow userFollow);
 }
