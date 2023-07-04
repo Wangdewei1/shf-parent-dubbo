@@ -132,4 +132,15 @@ public class UserInfoController {
         return userInfoService.login(loginVo,userInfo);
     }
 
+    /**
+     * 注销登录
+     */
+    @GetMapping("/logout")
+    public Result logout(HttpSession session){
+        //将UserInfo从session中移除
+//        session.invalidate();
+        session.removeAttribute("UserInfo");
+        return Result.ok();
+    }
+
 }

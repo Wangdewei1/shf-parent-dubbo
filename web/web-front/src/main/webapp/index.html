@@ -22,10 +22,20 @@
 <div id="list">
     <div class="header">
         <div class="width1190">
+            <!--用户未登录-->
             <div class="fl">您好，欢迎来到尚好房！</div>
-            <div class="fr">
+            <div class="fr" v-if="userInfo.nickName == ''">
                 <a href="login.html">登录</a> |
                 <a href="register.html">注册</a> |
+                <a href="javascript:;">加入收藏</a> |
+                <a href="javascript:;">设为首页</a>
+            </div>
+
+            <!--用户已经登陆-->
+            <div class="fr" v-else>
+                <a href="javascript:;">欢迎{{userInfo.nickName}}</a> |
+                <a href="javascript:;" @click="logout()">退出</a> |
+                <a href="follow.html">我的关注</a> |
                 <a href="javascript:;">加入收藏</a> |
                 <a href="javascript:;">设为首页</a>
             </div>
@@ -230,6 +240,9 @@
         el: '#list',
 
         data: {
+            userInfo:{
+                nickName:''
+            },
             //区域列表
             areaList: [],
             //板块列表
@@ -291,6 +304,8 @@
             this.fetchDictData()
             //默认加载第一页数据
             this.fetchData(1);
+            //默认加载完成时，初始化用户信息
+            this.loadUserInfo()
         },
 
         methods: {
@@ -409,6 +424,25 @@
                 this.houseQueryVo.priceSort = null
                 this.houseQueryVo.timeSort = 1
                 this.fetchData(1)
+            },
+            //加载用户的登录的信息
+            loadUserInfo(){
+                //从session中获取用户信息
+                var item = sessionStorage.getItem("userInfo");
+                //判断用户
+                if (item != null && item != ''){
+                    this.userInfo = JSON.parse(item)
+                }
+            },
+            //退出登录
+            logout(){
+                axios({
+                    "url":"/userInfo/logout",
+                    "method":"GET"
+                }).then(response => {
+                    sessionStorage.removeItem("userInfo")
+                    location.href = "index.html"
+                })
             }
         }
     })
