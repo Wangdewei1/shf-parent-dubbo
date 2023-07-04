@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.auto.mapper.UserFollowMapper">
+
+    <!--根据用户id和房源id查询关注-->
+    <sql id="columns">
+        uf.id,
+        uf.house_id,
+        uf.update_time,
+        (SELECT name FROM hse_dict WHERE id = hh.community_id AND is_deleted = 0) communityName,
+        hh.name,
+        hh.build_area,
+        hh.total_price,
+        hh.default_image_url,
+        hh.house_type_id,
+        hh.floor_id,
+        hh.direction_id,
+        (SELECT name FROM hse_dict WHERE id = hh.house_type_id AND is_deleted = 0) houseTypeName,
+        (SELECT name FROM hse_dict WHERE id = hh.floor_id AND is_deleted = 0) floorName,
+        (SELECT name FROM hse_dict WHERE id = hh.direction_id AND is_deleted = 0) directionName,
+        uf.update_time
+    </sql>
+
+    <!--根据用户id和房源id查询关注 where条件-->
+    <sql id="findUserFollowByUserIdAndHouseIdWhere">
+        WHERE
+        ui.is_deleted = 0
+        AND uf.is_deleted = 0
+        AND hh.is_deleted = 0
+        AND ui.status = 1
+    </sql>
+
+    <!--所有字段-->
+    <sql id="base_columns">
+        id,
+        user_id,
+        house_id,
+        create_time,
+        update_time,
+        is_deleted
+    </sql>
+    <!--根据用户id和房源id查询关注-->
+
+    <select id="findUserFollowByUserIdAndHouseId1" resultType="UserFollowVo">
+        SELECT
+        <include refid="columns"></include>
+        FROM
+        user_follow uf
+        LEFT JOIN
+        user_info ui
+        ON
+        uf.user_id = ui.id
+        LEFT JOIN
+        hse_house hh
+        ON
+        uf.house_id = hh.id
+        <include refid="findUserFollowByUserIdAndHouseIdWhere"></include>
+    </select>
+
+    <!--根据用户id和房源id查询关注-->
+    <select id="findUserFollowByUserIdAndHouseId" resultType="UserFollow">
+        SELECT
+        <include refid="base_columns"></include>
+        FROM
+        user_follow
+        WHERE
+        user_id = #{userId}
+        AND
+        house_id = #{houseId}
+        AND
+        is_deleted = 0
+    </select>
+
+    <!--插入关注-->
+    <insert id="insert">
+        INSERT INTO
+        user_follow(user_id ,house_id)
+        VALUES(#{userId} , #{houseId})
+    </insert>
+
+    <!--更新状态-->
+    <update id="update">
+        UPDATE
+        user_follow
+        SET
+        is_deleted = #{isDeleted}
+        WHERE
+        user_id = #{userId}
+        AND
+        house_id = #{houseId}
+        AND
+        status = 1
+        AND
+        is_deleted = 0
+    </update>
+
+</mapper>

@@ -46,4 +46,12 @@
     <!--放行静态资源-->
     <mvc:default-servlet-handler></mvc:default-servlet-handler>
 
+    <!--配置拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**/auth/**"/>
+            <bean class="com.auto.interceptor.LoginInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
 </beans>

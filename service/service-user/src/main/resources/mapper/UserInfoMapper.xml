@@ -6,6 +6,11 @@
 
     <!--查询userInfo-->
     <sql id="columns">
+        id,
+        status,
+        create_time,
+        update_time,
+        is_deleted,
         phone,
         password,
         nick_name

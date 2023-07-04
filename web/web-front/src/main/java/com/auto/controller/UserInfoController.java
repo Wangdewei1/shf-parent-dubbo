@@ -1,8 +1,8 @@
 package com.auto.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.auto.constant.LoginUserInfoConstant;
 import com.auto.constant.RedisConstant;
-import com.auto.en.UserLoginStatusLocked;
 import com.auto.entity.UserInfo;
 import com.auto.entity.vo.LoginVo;
 import com.auto.entity.vo.RegisterVo;
@@ -10,17 +10,13 @@ import com.auto.result.Result;
 import com.auto.result.ResultCodeEnum;
 import com.auto.service.UserInfoService;
 import com.auto.util.CastUtil;
-import com.auto.util.MD5;
 import com.auto.util.VerificationUtil;
-import com.sun.org.apache.regexp.internal.RE;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Calendar;
 
@@ -127,7 +123,7 @@ public class UserInfoController {
         UserInfo userInfo = userInfoService.findByPhone(loginVo.getPhone());
 
         //将userInfo对象存到session中
-        session.setAttribute("USER", userInfo);
+        session.setAttribute(LoginUserInfoConstant.LOGIN_USER_INFO, userInfo);
 
         return userInfoService.login(loginVo,userInfo);
     }

@@ -129,7 +129,7 @@
                 <h3 class="proTitle">
                     {{house.name}}
                     <span v-if="isFollow" style="margin-left: 50px; font-size: 14px;"><a href="javascript:;">已关注</a></span>
-                    <span v-else style="margin-left: 50px; font-size: 14px;"><a href="javascript:;">关注</a></span>
+                    <span v-else style="margin-left: 50px; font-size: 14px;"><a href="javascript:;" @click="addFollow()">关注</a></span>
                 </h3>
                 <div class="proText1">
                     <div class="proText1-detail-pri">
@@ -486,6 +486,20 @@
                 }).then(response => {
                     sessionStorage.removeItem("userInfo")
                     location.href = "index.html"
+                })
+            },
+            //添加关注
+            addFollow(){
+                axios({
+                    "url":"/userFollow/auth/follow/"+this.id,
+                    "method":"GET"
+                }).then(response => {
+                    //如果没登录，拦截器会返回208状态，跳转登录页面
+                    if (response.data.code == 208) {
+                        location.href = 'login.html?originUrl='+location.href
+                    } else {
+                        this.isFollow = true
+                    }
                 })
             }
         }
