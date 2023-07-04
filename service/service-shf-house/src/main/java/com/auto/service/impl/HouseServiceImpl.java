@@ -9,10 +9,7 @@ import com.auto.entity.*;
 import com.auto.entity.pojo.ResultHouseInfo;
 import com.auto.entity.vo.HouseQueryVo;
 import com.auto.entity.vo.HouseVo;
-import com.auto.mapper.HouseBrokerMapper;
-import com.auto.mapper.HouseImageMapper;
-import com.auto.mapper.HouseMapper;
-import com.auto.mapper.HouseUserMapper;
+import com.auto.mapper.*;
 import com.auto.service.CommunityService;
 import com.auto.service.HouseService;
 import com.github.pagehelper.PageHelper;
@@ -35,8 +32,8 @@ public class HouseServiceImpl extends BaseServiceImpl<House> implements HouseSer
     @Autowired
     private HouseBrokerMapper houseBrokerMapper;
 
-    @Reference
-    private CommunityService communityService;
+    @Autowired
+    private CommunityMapper communityMapper;
 
     @Autowired
     private HouseUserMapper houseUserMapper;
@@ -95,7 +92,7 @@ public class HouseServiceImpl extends BaseServiceImpl<House> implements HouseSer
 
         List<HouseUser> houseUserList = houseUserMapper.findHouseUserList(houseId);
 
-        Community community = communityService.getById(house.getCommunityId());
+        Community community = communityMapper.getById(house.getCommunityId());
 
         return new ResultHouseInfo(house, community, houseBrokerList, houseImage1List, houseUserList,false);
     }
