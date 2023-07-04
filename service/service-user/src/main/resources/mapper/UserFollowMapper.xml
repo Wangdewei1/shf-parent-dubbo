@@ -26,7 +26,8 @@
     <!--根据用户id和房源id查询关注 where条件-->
     <sql id="findUserFollowByUserIdAndHouseIdWhere">
         WHERE
-        ui.is_deleted = 0
+        ui.id = #{userId}
+        AND ui.is_deleted = 0
         AND uf.is_deleted = 0
         AND hh.is_deleted = 0
         AND ui.status = 1
@@ -43,7 +44,7 @@
     </sql>
     <!--根据用户id和房源id查询关注-->
 
-    <select id="findUserFollowByUserIdAndHouseId1" resultType="UserFollowVo">
+    <select id="findUserFollowListPage" resultType="UserFollowVo">
         SELECT
         <include refid="columns"></include>
         FROM

@@ -3,12 +3,18 @@ package com.auto.service.impl;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.auto.base.BaseMapper;
 import com.auto.base.BaseServiceImpl;
+import com.auto.constant.PageConstant;
 import com.auto.entity.UserFollow;
 import com.auto.entity.UserInfo;
+import com.auto.entity.vo.UserFollowVo;
 import com.auto.mapper.UserFollowMapper;
 import com.auto.result.Result;
 import com.auto.service.UserFollowService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 /**
  * 关注 业务
@@ -62,5 +68,22 @@ public class UserFollowServiceImpl extends BaseServiceImpl<UserFollow> implement
     public UserFollow findUserFollowByUserIdAndHouseId(Long houseId, UserInfo userInfo) {
         UserFollow userFollow = userFollowMapper.findUserFollowByUserIdAndHouseId(userInfo.getId(),houseId);
         return userFollow;
+    }
+
+    /**
+     * 根据用户id分页查询关注列表
+     * @param pageNum
+     * @param pageSize
+     * @param id
+     * @return
+     */
+    @Override
+    public PageInfo<UserFollowVo> findUserFollowListPage(Integer pageNum, Integer pageSize, Long id) {
+        //1.开启分页
+        PageHelper.startPage(pageNum, pageSize);
+        //2.根据用户id查询关注列表
+        List<UserFollowVo> userFollowVoList = userFollowMapper.findUserFollowListPage(id);
+        //返回分页结果
+        return new PageInfo<>(userFollowVoList, PageConstant.NAVIGATE_PAGES);
     }
 }
