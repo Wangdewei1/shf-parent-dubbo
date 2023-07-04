@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.auto.constant.FileConstant;
 import com.auto.entity.Admin;
 import com.auto.service.AclAdminService;
+import com.auto.service.UploadQinNiuFileService;
 import com.auto.util.FileUtil;
 import com.auto.util.QiniuUtils;
 import com.github.pagehelper.PageInfo;
@@ -31,6 +32,9 @@ public class AclAdminController {
 
     @Reference
     private AclAdminService aclAdminService;
+
+    @Reference
+    private UploadQinNiuFileService uploadQinNiuFileService;
 
     /**
      * 查询所有 根据条件
@@ -107,22 +111,14 @@ public class AclAdminController {
     public String uploadAvatar(@PathVariable("id") Long id,
                                @RequestParam("file") MultipartFile multipartFile,
                                Model model) throws IOException {
-        //1.上传文件的唯一名称
-        String uuidName = FileUtil.getUUIDName(multipartFile.getOriginalFilename());
 
-        //2.设置上传到七牛云中的路径
-        String randomDirPath = "shf/" + FileUtil.getRandomDirPath(FileConstant.DEFAULT_DIR_LEVEL, FileConstant.DEFAULT_DIR_SIZE);
+        //1.获取七牛云的头像路径
+        String qinNiuDirPath = uploadQinNiuFileService.getQinNiuPath(multipartFile.getBytes(), multipartFile.getOriginalFilename());
 
-        //3.转变成七牛云的储存路径
-        String qinNiuDirPath = randomDirPath + uuidName;
-
-        //4.加域名的七牛云储存路径
+        //2.加域名的七牛云储存路径
         String url = QiniuUtils.getUrl(qinNiuDirPath);
 
-        //5.将图片上传到七牛云
-        QiniuUtils.upload2Qiniu(multipartFile.getBytes(), qinNiuDirPath);
-
-        //6.将土图片路径存到数据库
+        //3.将土图片路径存到数据库
         Admin admin = aclAdminService.getById(id);
         admin.setHeadUrl(url);
         aclAdminService.update(admin);
@@ -130,7 +126,6 @@ public class AclAdminController {
         model.addAttribute("messagePage", "上传头像成功");
 
         return PAGE_SUCCESS;
-
 
     }
 }

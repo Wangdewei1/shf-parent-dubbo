@@ -7,6 +7,7 @@ import com.auto.entity.HouseImage;
 import com.auto.result.Result;
 import com.auto.service.HouseImageService;
 import com.auto.service.HouseService;
+import com.auto.service.UploadQinNiuFileService;
 import com.auto.util.FileUtil;
 import com.auto.util.QiniuUtils;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,9 @@ public class HouseImageController {
 
     @Reference
     private HouseService houseService;
+
+    @Reference
+    private UploadQinNiuFileService uploadQinNiuFileService;
 
     private static final String ACTION_UPLOAD_SHOW_PAGE = "house/upload";
 
@@ -58,14 +62,8 @@ public class HouseImageController {
                                                         @PathVariable("houseImageType") Integer type,
                                                         @RequestParam("file") MultipartFile file) throws IOException {
         //上传文件到七牛云
-        //1.上传文件有唯一的名字，获取真实文件名 并设置为唯一值
-        String uuidName = FileUtil.getUUIDName(file.getOriginalFilename());
-        //2.设置上传路径目录级别
-        String randomDirPath = "shf/" + FileUtil.getRandomDirPath(FileConstant.DEFAULT_DIR_LEVEL, FileConstant.DEFAULT_DIR_SIZE);
-        //3.构建图片在七牛云的路径
-        String qinNiuDirPath = randomDirPath + uuidName;
-        //4.上传图片七牛云
-        QiniuUtils.upload2Qiniu(file.getBytes(), qinNiuDirPath);
+        String qinNiuDirPath = uploadQinNiuFileService.getQinNiuPath(file.getBytes(), file.getOriginalFilename());
+
         //5.获取访问七牛云的访问路径
         String url = QiniuUtils.getUrl(qinNiuDirPath);
 
@@ -73,7 +71,7 @@ public class HouseImageController {
         //1.
         HouseImage houseImage = new HouseImage();
         houseImage.setHouseId(houseId);
-        houseImage.setImageName(uuidName);
+        houseImage.setImageName(uploadQinNiuFileService.getUUIDName(file.getOriginalFilename()));
         houseImage.setType(type);
         houseImage.setImageUrl(url);
         houseImageService.insert(houseImage);
