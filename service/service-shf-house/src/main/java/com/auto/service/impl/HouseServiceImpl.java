@@ -10,8 +10,8 @@ import com.auto.entity.pojo.ResultHouseInfo;
 import com.auto.entity.vo.HouseQueryVo;
 import com.auto.entity.vo.HouseVo;
 import com.auto.mapper.*;
-import com.auto.service.CommunityService;
 import com.auto.service.HouseService;
+import com.auto.service.UserFollowService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +37,9 @@ public class HouseServiceImpl extends BaseServiceImpl<House> implements HouseSer
 
     @Autowired
     private HouseUserMapper houseUserMapper;
+
+    @Reference
+    private UserFollowService userFollowService;
 
     @Override
     public BaseMapper<House> getBaseMapper() {
@@ -81,19 +84,28 @@ public class HouseServiceImpl extends BaseServiceImpl<House> implements HouseSer
      * @return
      */
     @Override
-    public ResultHouseInfo findHouseInfos(Long houseId) {
+    public ResultHouseInfo findHouseInfos(Long houseId , UserInfo userInfo) {
 
-        //1.
+        //1.根据houseId获取小区信息
         House house = houseMapper.getById(houseId);
-
+        //2.根据房源id和小区类型获取房源图片信息
         List<HouseImage> houseImage1List = houseImageMapper.findHouseImageList(houseId, HouseImageType.HOUSE_IMAGE_TYPE.getType());
-
+        //3.根据房源id查询经纪人列表
         List<HouseBroker> houseBrokerList = houseBrokerMapper.findHouseBrokerList(houseId);
-
+        //4.根据用户id查询房东信息
         List<HouseUser> houseUserList = houseUserMapper.findHouseUserList(houseId);
-
+        //根据小区获取小区信息
         Community community = communityMapper.getById(house.getCommunityId());
+        //返回封装房源详情的结果
 
-        return new ResultHouseInfo(house, community, houseBrokerList, houseImage1List, houseUserList,false);
+        //是否关注 默认
+        boolean isFollow = false;
+        //如果当前没有登陆，isFollow一定为false，未关注
+        if (userInfo != null){
+            UserFollow userFollow = userFollowService.findUserFollowByUserIdAndHouseId(houseId, userInfo);
+            isFollow = (userFollow != null && userFollow.getIsDeleted() == 0);
+        }
+
+        return new ResultHouseInfo(house, community, houseBrokerList, houseImage1List, houseUserList,isFollow);
     }
 }

@@ -51,4 +51,16 @@ public class UserFollowServiceImpl extends BaseServiceImpl<UserFollow> implement
         }
         return Result.ok();
     }
+
+    /**
+     * 重载
+     * @param houseId
+     * @param userInfo
+     * @return
+     */
+    @Override
+    public UserFollow findUserFollowByUserIdAndHouseId(Long houseId, UserInfo userInfo) {
+        UserFollow userFollow = userFollowMapper.findUserFollowByUserIdAndHouseId(userInfo.getId(),houseId);
+        return userFollow;
+    }
 }

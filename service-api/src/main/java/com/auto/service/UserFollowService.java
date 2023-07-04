@@ -7,4 +7,6 @@ import com.auto.result.Result;
 
 public interface UserFollowService extends BaseService<UserFollow> {
     Result findUserFollowByUserIdAndHouseId(UserInfo userInfo, Long houseId);
+
+    UserFollow findUserFollowByUserIdAndHouseId(Long houseId,UserInfo userInfo);
 }

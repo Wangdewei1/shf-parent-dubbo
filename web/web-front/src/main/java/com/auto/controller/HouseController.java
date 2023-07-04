@@ -1,6 +1,8 @@
 package com.auto.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.auto.constant.LoginUserInfoConstant;
+import com.auto.entity.UserInfo;
 import com.auto.entity.pojo.ResultHouseInfo;
 import com.auto.entity.vo.HouseQueryVo;
 import com.auto.entity.vo.HouseVo;
@@ -9,6 +11,7 @@ import com.auto.service.*;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -44,10 +47,14 @@ public class HouseController {
      * 查看房源详情页
      */
     @GetMapping("/info/{id}")
-    public Result toHouseInfoPage(@PathVariable("id") Long houseId){
+    public Result toHouseInfoPage(@PathVariable("id") Long houseId,
+                                  HttpSession session){
+
+        //查询用户信息 从session中
+        UserInfo userInfo = (UserInfo) session.getAttribute(LoginUserInfoConstant.LOGIN_USER_INFO);
 
         //封装查寻房源详情的方法
-        ResultHouseInfo resultHouseInfo = houseService.findHouseInfos(houseId);
+        ResultHouseInfo resultHouseInfo = houseService.findHouseInfos(houseId,userInfo);
         return Result.ok(resultHouseInfo);
     }
 }
