@@ -22,9 +22,12 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * 用户线管逻辑
@@ -151,15 +154,25 @@ public class UserInfoServiceImpl extends BaseServiceImpl<UserInfo> implements Us
             return Result.build(null,ResultCodeEnum.NOT_SEND_MORE_THAN_VERIFICATION_TWICE);
         }
         //拼接当前的年月日
-        Calendar calendar = Calendar.getInstance();
+/*        Calendar calendar = Calendar.getInstance();
 
         String codeCountKey = phone + RedisConstant.DEFAULT_SEND_VERIFICATION_PHONE_KEY_STR +
                 RedisConstant.DEFAULT_COLON + calendar.get(Calendar.YEAR) +
                 RedisConstant.DEFAULT_COLON + calendar.get(Calendar.MONTH) +
-                RedisConstant.DEFAULT_COLON + calendar.get(Calendar.DAY_OF_MONTH);
+                RedisConstant.DEFAULT_COLON + calendar.get(Calendar.DAY_OF_MONTH);*/
+
+        //拼接当前的年:月:日
+        String codeCountKey = phone + RedisConstant.DEFAULT_SEND_VERIFICATION_PHONE_KEY_STR +
+                RedisConstant.DEFAULT_COLON + LocalDate.now() //本地服务的当前时间
+                .format(DateTimeFormatter.ofPattern(RedisConstant.DEFAULT_JOIN_STR_FORMAT_DATE)); //进行日期格式化
 
         //检查当前手机号是否发送超过五次 给默认值0
-        int count = CastUtil.castInt(jedis.get(codeCountKey), 0);
+//        int count = CastUtil.castInt(jedis.get(codeCountKey), 0);
+
+        //检查当前手机号今天发送的验证码的次数是否超过5次
+        int count = Optional.ofNullable(jedis.get(codeCountKey)) //根据key获取redis中验证码的value
+                .map(Integer::valueOf) //将获取的值映射成Integer的ValueOf方法
+                .orElse(0); //判断当前的值是否为null ， 如果为null则给默认值0
 
         //判断当前次数
         if (count == RedisConstant.DEFAULT_SEND_VERIFICATION_COUNT){

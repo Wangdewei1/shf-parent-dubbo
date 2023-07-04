@@ -22,4 +22,7 @@ public class RedisConstant {
 
     //冒号
     public static final String DEFAULT_COLON = ":";
+
+    //默认日期格式
+    public static final String DEFAULT_JOIN_STR_FORMAT_DATE = "yyyy:M:d";
 }
