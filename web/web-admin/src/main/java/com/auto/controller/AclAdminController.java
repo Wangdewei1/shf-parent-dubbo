@@ -3,7 +3,11 @@ package com.auto.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.auto.constant.FileConstant;
 import com.auto.entity.Admin;
+import com.auto.entity.Role;
+import com.auto.result.Result;
+import com.auto.service.AclAdminRoleService;
 import com.auto.service.AclAdminService;
+import com.auto.service.AclRoleService;
 import com.auto.service.UploadQinNiuFileService;
 import com.auto.util.FileUtil;
 import com.auto.util.QiniuUtils;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,12 +34,19 @@ public class AclAdminController {
     private static final String ACCTION_EDIT_USER = "admin/edit";
     private static final String REDIRECT_ADMIN_INDEX = "redirect:/admin";
     private static final String ACTION_UPLOAD_AVATAR = "admin/upload";
+    private static final String PAGE_ASSIGN_SHOW = "admin/assignShow";
 
     @Reference
     private AclAdminService aclAdminService;
 
     @Reference
     private UploadQinNiuFileService uploadQinNiuFileService;
+
+    @Reference
+    private AclRoleService aclRoleService;
+
+    @Reference
+    private AclAdminRoleService aclAdminRoleService;
 
     /**
      * 查询所有 根据条件
@@ -127,5 +139,31 @@ public class AclAdminController {
 
         return PAGE_SUCCESS;
 
+    }
+
+    /**
+     * 给用户分配角色
+     */
+    @GetMapping("/assignShow/{id}")
+    public String assignShow(@PathVariable("id") Long id,Model model){
+        //1.将adminId存到请求域中
+        model.addAttribute("adminId", id);
+        //2.将未分配的角色列表存到请求域中 unAssignRoleList
+        //3.将已分配的角色列表存到请求域中 assignRoleList
+        Map<String, List<Role>> roleMap = aclRoleService.findUnAssignRoleListAssignRoleListByAdminId(id);
+        //存的是map中的所有键值对
+        model.addAllAttributes(roleMap);
+        return PAGE_ASSIGN_SHOW;
+    }
+
+    @PostMapping("/assignRole")
+    public String assignRole(@RequestParam("roleIds") List<Long> roleIds,
+                             @RequestParam("adminId") Long adminId,
+                             Model model) {
+        //1. 调用业务层的方法给当前用户分配角色
+        aclAdminService.assignRole(roleIds, adminId);
+        //2. 显示成功页面
+        model.addAttribute("messagePage", "分配角色成功");
+        return PAGE_SUCCESS;
     }
 }
