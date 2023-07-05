@@ -57,6 +57,8 @@
             <if test="_parameter != null and _parameter != ''">
                 id = #{id}
             </if>
+            AND
+            is_deleted = 0
         </where>
     </select>
 

@@ -85,4 +85,24 @@
         WHERE id = #{id}
     </update>
 
+
+    <!--根据用户id查询角色信息-->
+    <select id="findRoleListByAdminId" resultType="Role">
+        SELECT
+        DISTINCT
+        ar.role_name
+        FROM
+        acl_role ar
+        LEFT JOIN
+        acl_admin_role adr
+        ON
+        ar.id = adr.role_id
+        WHERE
+        ar.id in (SELECT role_id from acl_admin_role where admin_id = #{adminId} and is_deleted = 0)
+        AND
+        ar.is_deleted = 0
+        AND
+        adr.is_deleted = 0
+    </select>
+
 </mapper>

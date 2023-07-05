@@ -8,6 +8,8 @@ import com.auto.mapper.AclRoleMapper;
 import com.auto.service.AclRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 
 /**
  * 用户管理 业务层
@@ -20,5 +22,15 @@ public class AclRoleServiceImpl extends BaseServiceImpl<Role> implements AclRole
     @Override
     public BaseMapper<Role> getBaseMapper() {
         return aclRoleMapper;
+    }
+
+    /**
+     * 根据用户id查询所有用户列表
+     * @param adminId
+     * @return
+     */
+    @Override
+    public List<Role> findRoleListByAdminId(Long adminId) {
+        return aclRoleMapper.findRoleListByAdminId(adminId);
     }
 }

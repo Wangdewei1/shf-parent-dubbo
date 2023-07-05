@@ -67,7 +67,7 @@
     <mvc:default-servlet-handler></mvc:default-servlet-handler>
 
     <!--view-controller-->
-    <mvc:view-controller path="/" view-name="frame/index"></mvc:view-controller>
+<!--    <mvc:view-controller path="/" view-name="frame/index"></mvc:view-controller>-->
     <!--欢迎页-->
     <mvc:view-controller path="/main" view-name="frame/main"></mvc:view-controller>
     <!--角色管理页-->
