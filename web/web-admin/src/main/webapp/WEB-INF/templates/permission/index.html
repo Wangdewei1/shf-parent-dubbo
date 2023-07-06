@@ -107,4 +107,25 @@
     </div>
 </form>
 </body>
+<script th:inline="javascript">
+    $(function () {
+        //新增菜单按钮绑定
+        $(".create").on("click", function () {
+            var parentId = $(this).attr("data-id");
+            var type = $(this).attr("data-type");
+            var parentName = $(this).attr("data-name");
+            opt.openWin('/permission/create?parentId=' + parentId + '&type=' + type + '&parentName=' + parentName, '新增', 630, 430)
+        });
+        //删除
+        $(".delete").on("click", function () {
+            var id = $(this).attr("data-id");
+            opt.confirm('/permission/delete/' + id);
+        });
+        //修改
+        $(".edit").on("click", function () {
+            var id = $(this).attr("data-id");
+            opt.openWin('/permission/edit/' + id, '修改', 580, 430);
+        });
+    });
+</script>
 </html>
