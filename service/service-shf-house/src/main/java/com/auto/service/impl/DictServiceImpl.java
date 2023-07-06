@@ -1,6 +1,7 @@
 package com.auto.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.auto.anno.RedisCatch;
 import com.auto.entity.Dict;
 import com.auto.mapper.DictMapper;
 import com.auto.service.DictService;
@@ -25,6 +26,7 @@ public class DictServiceImpl implements DictService {
      * @param id
      * @return
      */
+    @RedisCatch
     @Override
     public List<Map<String, Object>> findListByParentId(Long id) {
 
@@ -51,6 +53,7 @@ public class DictServiceImpl implements DictService {
      * @param id
      * @return
      */
+    @RedisCatch
     @Override
     public Integer countIsParent(Long id) {
         return dictMapper.countIsParent(id);
@@ -61,6 +64,7 @@ public class DictServiceImpl implements DictService {
      * @param parentCode
      * @return
      */
+    @RedisCatch
     @Override
     public List<Dict> findDictListByDicCode(String parentCode) {
         return dictMapper.findDictListByDicCode(parentCode);
@@ -71,6 +75,7 @@ public class DictServiceImpl implements DictService {
      * @param parentId
      * @return
      */
+    @RedisCatch
     @Override
     public List<Dict> findDictListByParentId(Long parentId) {
         return dictMapper.findListByParentId(parentId);
