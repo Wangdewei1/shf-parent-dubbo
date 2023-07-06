@@ -14,6 +14,7 @@ import com.auto.util.QiniuUtils;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -71,7 +72,7 @@ public class AclAdminController {
      * 添加用户
      */
     @PostMapping("/save")
-    public String addAdmin(Admin admin , Model model){
+    public String addAdmin(@Validated(Admin.class) Admin admin , Model model){
         aclAdminService.insert(admin);
         model.addAttribute("messagePage", "用户添加成功");
         return PAGE_SUCCESS;
@@ -91,7 +92,7 @@ public class AclAdminController {
      * 提交修改用户信息
      */
     @PostMapping("/update")
-    public String updateAdmin(Admin admin,Model model){
+    public String updateAdmin(@Validated(Admin.class) Admin admin, Model model){
         aclAdminService.update(admin);
         model.addAttribute("messagePage", "用户修改成功");
         return PAGE_SUCCESS;

@@ -7,6 +7,7 @@ import com.auto.entity.vo.LoginVo;
 import com.auto.entity.vo.RegisterVo;
 import com.auto.result.Result;
 import com.auto.service.UserInfoService;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 
@@ -33,7 +34,7 @@ public class UserInfoController {
      * 注册功能
      */
     @PostMapping("/register")
-    public Result registerUser(@RequestBody RegisterVo registerVo){
+    public Result registerUser(@Validated @RequestBody RegisterVo registerVo){
         return userInfoService.register(registerVo);
     }
 
@@ -41,7 +42,7 @@ public class UserInfoController {
      * 登录功能
      */
     @PostMapping("/login")
-    public Result login(@RequestBody LoginVo loginVo, HttpSession session){
+    public Result login(@Validated @RequestBody LoginVo loginVo, HttpSession session){
 
         //1.根据手机号获取UserInfo对象
         UserInfo userInfo = userInfoService.findByPhone(loginVo.getPhone());
