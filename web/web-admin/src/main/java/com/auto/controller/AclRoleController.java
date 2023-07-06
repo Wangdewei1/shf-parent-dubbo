@@ -1,7 +1,10 @@
 package com.auto.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.fastjson.JSON;
 import com.auto.entity.Role;
+import com.auto.entity.pojo.ResultZNodesInfo;
+import com.auto.service.AclPermissionService;
 import com.auto.service.AclRoleService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Controller;
@@ -9,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -27,8 +31,13 @@ public class AclRoleController {
 
     public static final String ADD_ROLE_PAGE = "role/create";
 
+    private static final String PAGE_ASSIGN_SHOW = "role/assignShow";
+
     @Reference
     private AclRoleService aclRoleService;
+
+    @Reference
+    private AclPermissionService aclPermissionService;
 
     @GetMapping("/frame")
     public String toIndexPage(){
@@ -75,6 +84,35 @@ public class AclRoleController {
     public String deleteRole(@PathVariable("id") Long id){
         aclRoleService.delete(id);
         return REDIRECT_INDEX_ROLE_PAGE;
+    }
+
+    /**
+     * 给角色分配权限
+     */
+    @RequestMapping("/assignShow/{id}")
+    public String assignShow(@PathVariable("id") Long roleId, Model model){
+
+        //1.根据角色id查询所有权限列表，并存到请求域中
+        //注意储存到请求域中的是zNodes Json字符串
+        List<ResultZNodesInfo> zNodes = aclPermissionService.findPermissionListByRoleId(roleId);
+
+        model.addAttribute("zNodes", JSON.toJSONString(zNodes));
+        //2.将角色id存到请求域中
+        model.addAttribute("roleId",roleId);
+
+        return PAGE_ASSIGN_SHOW;
+    }
+
+    @PostMapping("/assignPermission")
+    public String saveAssignPermission(@RequestParam("roleId") Long roleId,
+                                       @RequestParam("permissionIds") List<Long> permissionIds,
+                                       Model model){
+
+        //1.根据角色id和权限id列表保存  给角色分配权限
+        aclPermissionService.assignPermission(roleId,permissionIds);
+
+        model.addAttribute("messagePage", "保存权限成功");
+        return PAGE_SUCCESS;
     }
 
 }

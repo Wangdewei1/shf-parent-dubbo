@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.auto.mapper.AclRolePermissionMapper">
+    <!--根据角色id查询权限列表-->
+    <select id="findPermissionListByRoleId" resultType="Permission">
+        SELECT
+        ap.id, ap.parent_id, ap.name
+        FROM
+        acl_permission ap
+        LEFT JOIN
+        acl_role_permission arp
+        ON
+        ap.id = arp.permission_id
+        WHERE
+        arp.role_id = #{roleId}
+        AND
+        ap.is_deleted = 0
+        AND
+        arp.is_deleted = 0
+    </select>
+
+    <!--根据角色id查询权限id集合-->
+    <select id="findPermissionIds" resultType="long">
+        SELECT
+        permission_id
+        FROM
+        acl_role_permission
+        WHERE
+        role_id = #{roleId}
+        AND
+        is_deleted = 0
+    </select>
+
+    <!--根据角色id和打对号的id集合查询角色权限表-->
+    <select id="findPermissionListByRoleIdAndPermissionIds" resultType="RolePermission">
+        SELECT
+        id, role_id, permission_id, create_time, update_time, is_deleted
+        FROM
+        acl_role_permission
+        <where>
+            role_id = #{roleId}
+            <if test="permissionIds != null and permissionIds != ''">
+                AND permission_id
+                IN
+                <foreach collection="permissionIds" item="permissionId" separator="," open="(" close=")">
+                    #{permissionId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <!--批量添加用户权限id-->
+    <insert id="insert">
+        INSERT INTO
+        acl_role_permission
+        (role_id ,permission_id)
+        VALUES
+        (#{roleId},#{permissionId})
+    </insert>
+
+    <!--更新角色权限 is_deleted的状态-->
+    <update id="update">
+        UPDATE
+        acl_role_permission
+        SET
+        is_deleted = #{isDeleted}
+        WHERE
+        role_id = #{roleId}
+    </update>
+
+
+    <!--删除当前角色的所有id集合-->
+    <delete id="deleteByRoleId">
+        DELETE FROM acl_role_permission WHERE role_id = #{roleId}
+    </delete>
+
+    <!-- 用 批量添加用户权限id-->
+    <insert id="insertBatch">
+        INSERT INTO acl_role_permission(role_id, permission_id) VALUES
+        <foreach collection="permissionIds" item="permissionId" separator=",">
+            (#{roleId}, #{permissionId})
+        </foreach>
+    </insert>
+
+</mapper>

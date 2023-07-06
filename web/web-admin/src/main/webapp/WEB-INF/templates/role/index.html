@@ -73,6 +73,7 @@
                                 <td class="text-center">
                                     <a class="edit" th:attr="data-id=${item.id}">修改</a>
                                     <a class="delete" th:attr="data-id=${item.id}">删除</a>
+                                    <a class="assgin" th:attr="data-id=${item.id}">分配权限</a>
                                 </td>
                             </tr>
                             </tbody>
@@ -140,6 +141,11 @@
         $(".delete").on("click", function () {
             var id = $(this).attr("data-id");
             opt.confirm('/role/delete/' + id);
+        });
+        //分配角色
+        $(".assgin").on("click",function () {
+            var id = $(this).attr("data-id");
+            opt.openWin("/role/assignShow/"+id,'修改',580,430);
         });
     });
 </script>

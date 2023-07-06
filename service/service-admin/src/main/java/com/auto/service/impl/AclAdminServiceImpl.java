@@ -50,4 +50,6 @@ public class AclAdminServiceImpl extends BaseServiceImpl<Admin> implements AclAd
             aclAdminRoleMapper.insertBatch(roleIds,adminId);
         }
     }
+
+
 }

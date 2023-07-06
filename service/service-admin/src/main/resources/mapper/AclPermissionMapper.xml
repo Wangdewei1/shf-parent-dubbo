@@ -52,4 +52,16 @@
         WHERE
         is_deleted = 0
     </select>
+
+    <!--根据权限id查询当前权限的数量-->
+    <select id="permissionCount" resultType="Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        acl_permission
+        WHERE
+        parent_id = #{parentId}
+        AND
+        is_deleted = 0
+    </select>
 </mapper>

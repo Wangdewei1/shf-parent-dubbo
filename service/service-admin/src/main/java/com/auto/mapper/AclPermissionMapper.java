@@ -10,4 +10,6 @@ import java.util.List;
  */
 public interface AclPermissionMapper extends BaseMapper<Permission> {
     List<Permission> findPermissionListByAdminId(Long adminId);
+
+    Integer permissionCount(Long id);
 }
