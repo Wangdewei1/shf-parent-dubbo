@@ -52,6 +52,7 @@ public class AclPermissionServiceImpl extends BaseServiceImpl<Permission> implem
 
             //判断当前权限是否超级管理员 ， 也就是父id为0
             return permissionList.stream()
+                    //permission.getParentId() == 0 用于定义过滤的条件。该条件检查每个元素的parentId属性是否等于0，只有符合条件的元素才会被保留下来。
                     .filter(permission -> permission.getParentId() == 0)
                     .map(permission -> {
                         //因为数据库表中没有level和子菜单children
@@ -80,7 +81,7 @@ public class AclPermissionServiceImpl extends BaseServiceImpl<Permission> implem
      */
     private List<Permission> getChildren(Permission permission, List<Permission> permissionList) {
         //注意这里的permission的parentId是现在菜单的id
-        //p是下一级Id
+        //p是集合里面的每条permission，让集合中的parentId等于permission中的id，符合条件的保留下来
         return permissionList.stream().filter(p -> p.getParentId().equals(permission.getId()))
                 .map(p -> {
                     //设置层级
