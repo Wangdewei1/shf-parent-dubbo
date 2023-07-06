@@ -25,4 +25,7 @@ public class RedisConstant {
 
     //默认日期格式
     public static final String DEFAULT_JOIN_STR_FORMAT_DATE = "yyyy:M:d";
+
+    //redis切面的  redis缓存键的时间
+    public static final int DEFAULT_KEY_EXPIRE = 24*60*60;
 }
