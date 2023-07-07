@@ -45,11 +45,11 @@
                                     <td th:text="${one.sort}">22</td>
                                     <td th:text="${#dates.format(one.createTime,'yyyy-MM-dd HH:mm:ss')}">33</td>
                                     <td class="text-center">
-                                        <a class="create" th:attr="data-id=${one.id},data-type=1,data-name=${one.name}">新增二级菜单</a>
+                                        <a class="create" th:attr="data-id=${one.id},data-type=1,data-name=${one.name}" sec:authorize="hasAnyAuthority('permission.create')">新增二级菜单</a>
                                         <a class="edit"
-                                           th:attr="data-id=${one.id}">修改</a>
+                                           th:attr="data-id=${one.id}" sec:authorize="hasAnyAuthority('permission.edit')">修改</a>
                                         <a class="delete"
-                                           th:attr="data-id=${one.id}">删除</a>
+                                           th:attr="data-id=${one.id}" sec:authorize="hasAnyAuthority('permission.delete')">删除</a>
                                     </td>
                                 </tr>
                                 <div th:each="two: ${one.children}">
@@ -66,11 +66,11 @@
                                         <td th:text="${#dates.format(two.createTime,'yyyy-MM-dd HH:mm:ss')}">33</td>
                                         <td class="text-center">
                                             <a class="create"
-                                               th:attr="data-id=${two.id},data-type=2,data-name=${two.name}">新增功能按钮</a>
+                                               th:attr="data-id=${two.id},data-type=2,data-name=${two.name}" sec:authorize="hasAnyAuthority('permission.create')">新增功能按钮</a>
                                             <a class="edit"
-                                               th:attr="data-id=${two.id}">修改</a>
+                                               th:attr="data-id=${two.id}" sec:authorize="hasAnyAuthority('permission.edit')">修改</a>
                                             <a class="delete"
-                                               th:attr="data-id=${two.id}">删除</a>
+                                               th:attr="data-id=${two.id}" sec:authorize="hasAnyAuthority('permission.delete')">删除</a>
                                         </td>
                                     </tr>
                                     <div th:each="three: ${two.children}">
@@ -90,9 +90,9 @@
                                             </td>
                                             <td class="text-center">
                                                 <a class="edit"
-                                                   th:attr="data-id=${three.id}">修改</a>
+                                                   th:attr="data-id=${three.id}" sec:authorize="permission.edit">修改</a>
                                                 <a class="delete"
-                                                   th:attr="data-id=${three.id}">删除</a>
+                                                   th:attr="data-id=${three.id}" sec:authorize="hasAnyAuthority('permission.delete')">删除</a>
                                             </td>
                                         </tr>
                                     </div>

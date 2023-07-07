@@ -67,8 +67,8 @@
                                 <td th:text="${item.buildYears}">22</td>
                                 <td th:text="${#dates.format(item.createTime,'yyyy-MM-dd HH:mm:ss')}">33</td>
                                 <td class="text-center">
-                                    <a class="edit" th:attr="data-id=${item.id}">修改</a>
-                                    <a class="delete" th:attr="data-id=${item.id}">删除</a>
+                                    <a class="edit" th:attr="data-id=${item.id}" sec:authorize="hasAnyAuthority('community.edit')">修改</a>
+                                    <a class="delete" th:attr="data-id=${item.id}" sec:authorize="hasAnyAuthority('community.delete')">删除</a>
                                 </td>
                             </tr>
                             </tbody>

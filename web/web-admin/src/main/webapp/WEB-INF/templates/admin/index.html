@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <!--<head th:include="common/head :: head"></head>-->
 <!--<head th:include="common/head :: head"></head>-->
@@ -66,7 +67,7 @@
                                     onclick="javascript:document.forms.ec.pageNum.value=1;document.forms.ec.submit();">
                                 搜索
                             </button>
-                            <button type="button" class="btn btn-sm btn-primary create"> 新增</button>
+                            <button type="button" class="btn btn-sm btn-primary create" sec:authorize="hasAuthority('admin.create')"> 新增</button>
                             <button type="button" id="loading-example-btn"
                                     onclick="javascript:window.location.reload();" class="btn btn-white btn-sm">刷新
                             </button>
@@ -94,10 +95,10 @@
                                 <td th:text="${item.phone}">22</td>
                                 <td th:text="${#dates.format(item.createTime,'yyyy-MM-dd HH:mm:ss')}">33</td>
                                 <td class="text-center">
-                                    <a class="edit" th:attr="data-id=${item.id}">修改</a>
-                                    <a class="delete" th:attr="data-id=${item.id}">删除</a>
-                                    <a class="upload" th:attr="data-id=${item.id}">上传头像</a>
-                                    <a class="assign" th:attr="data-id=${item.id}" >分配角色</a>
+                                    <a class="edit" th:attr="data-id=${item.id}" sec:authorize="hasAnyAuthority('admin.edit')">修改</a>
+                                    <a class="delete" th:attr="data-id=${item.id}" sec:authorize="hasAnyAuthority('admin.delete')">删除</a>
+                                    <a class="upload" th:attr="data-id=${item.id}" sec:authorize="hasAnyAuthority('admin.edit')">上传头像</a>
+                                    <a class="assign" th:attr="data-id=${item.id}" sec:authorize="hasAnyAuthority('admin.assign')">分配角色</a>
                                 </td>
                             </tr>
                             </tbody>

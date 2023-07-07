@@ -100,7 +100,7 @@
                         </table>
                         <div>
                             <button type="submit" class="btn btn-sm btn-primary"> 搜索</button>
-                            <button type="button" class="btn btn-sm btn-primary create"> 新增</button>
+                            <button type="button" class="btn btn-sm btn-primary create" sec:authorize="hasAnyAuthority('house.create')"> 新增</button>
                             <button type="button" id="loading-example-btn"
                                     onclick="javascript:window.location.reload();" class="btn btn-white btn-sm">刷新
                             </button>
@@ -133,11 +133,11 @@
                                 <td th:text="${item.status == 1 ? '已发布' : '未发布'}">22</td>
 
                                 <td class="text-center">
-                                    <a class="publish" th:if="${item.status} eq '0'" th:attr="data-id=${item.id},data-status=1">发布</a>
-                                    <a class="publish" th:if="${item.status} eq '1'" th:attr="data-id=${item.id},data-status=0">取消发布</a>
-                                    <a class="edit" th:attr="data-id=${item.id}">修改</a>
-                                    <a class="delete" th:attr="data-id=${item.id}">删除</a>
-                                    <a class="detail" th:attr="data-id=${item.id}">详情</a>
+                                    <a class="publish" th:if="${item.status} eq '0'" th:attr="data-id=${item.id},data-status=1" sec:authorize="hasAnyAuthority('house.publish')">发布</a>
+                                    <a class="publish" th:if="${item.status} eq '1'" th:attr="data-id=${item.id},data-status=0" sec:authorize="hasAnyAuthority('house.publish')">取消发布</a>
+                                    <a class="edit" th:attr="data-id=${item.id}" sec:authorize="hasAnyAuthority('house.edit')">修改</a>
+                                    <a class="delete" th:attr="data-id=${item.id}" sec:authorize="hasAnyAuthority('house.delete')">删除</a>
+                                    <a class="detail" th:attr="data-id=${item.id}" sec:authorize="hasAnyAuthority('house.edit')">详情</a>
                                 </td>
                             </tr>
                             </tbody>
