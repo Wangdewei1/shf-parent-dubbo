@@ -11,6 +11,13 @@
     <packaging>jar</packaging>
 
     <dependencies>
+
+        <!-- spring security安全框架 -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+        </dependency>
+
         <!-- SpringMVC相关 -->
         <dependency>
             <groupId>org.springframework</groupId>

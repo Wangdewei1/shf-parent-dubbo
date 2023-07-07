@@ -30,6 +30,9 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
+    <!--开启注解配置-->
+    <context:annotation-config></context:annotation-config>
+
     <!--视图解析器-->
     <bean id="viewResolver" class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
         <property name="order" value="1"/>
@@ -78,4 +81,6 @@
     <mvc:view-controller path="/admin" view-name="admin/index"></mvc:view-controller>
     <!--到字典页-->
     <mvc:view-controller path="/dict" view-name="dict/index"></mvc:view-controller>
+    <!--springSecurity 权限登入页-->
+    <mvc:view-controller path="/loginPage" view-name="frame/login"></mvc:view-controller>
 </beans>
