@@ -78,7 +78,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //3.3配置注销登录
                 .and().logout().logoutUrl("/logout")
                 //用户退出后，要被重定向到登录页
-                .logoutSuccessUrl("/loginPage");
+                .logoutSuccessUrl("/loginPage")
+                //配置登录后，退出后是否清除session
+                .invalidateHttpSession(true);
 
         //关闭跨域请求伪造
         http.csrf().disable();
