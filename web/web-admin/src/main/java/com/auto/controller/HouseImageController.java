@@ -10,6 +10,7 @@ import com.auto.service.HouseService;
 import com.auto.service.UploadQinNiuFileService;
 import com.auto.util.FileUtil;
 import com.auto.util.QiniuUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +44,7 @@ public class HouseImageController {
      * @return
      */
     @GetMapping("/uploadShow/{houseId}/{type}")
+    @PreAuthorize("hasAnyAuthority('house.editImage')")
     public String uploadFile(@PathVariable("houseId") Long houseId,
                              @PathVariable("type") Integer type,
                              Model model){
@@ -58,6 +60,7 @@ public class HouseImageController {
      */
     @PostMapping("/upload/{houseId}/{houseImageType}")
     @ResponseBody
+    @PreAuthorize("hasAnyAuthority('house.editImage')")
     public Result uploadImageByHouseIdAndHouseImageType(@PathVariable("houseId") Long houseId,
                                                         @PathVariable("houseImageType") Integer type,
                                                         @RequestParam("file") MultipartFile file) throws IOException {
@@ -93,6 +96,7 @@ public class HouseImageController {
      * 删除图片
      */
     @GetMapping("/delete/{houseId}/{id}")
+    @PreAuthorize("hasAnyAuthority('house.editImage')")
     public String deleteHouseImage(@PathVariable("houseId") Long houseId,
                                    @PathVariable("id") Long id){
         //根据图片的id查询图片的信息

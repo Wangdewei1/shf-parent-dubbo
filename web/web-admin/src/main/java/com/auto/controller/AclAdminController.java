@@ -12,6 +12,9 @@ import com.auto.service.UploadQinNiuFileService;
 import com.auto.util.FileUtil;
 import com.auto.util.QiniuUtils;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -49,9 +52,13 @@ public class AclAdminController {
     @Reference
     private AclAdminRoleService aclAdminRoleService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     /**
      * 查询所有 根据条件
      */
+    @PreAuthorize("hasAnyAuthority('admin.show')")
     @RequestMapping
     public String findAdminPage(@RequestParam Map<String,String> filters , Model model){
         PageInfo<Admin> page = aclAdminService.findPage(filters);
@@ -63,6 +70,7 @@ public class AclAdminController {
     /**
      * 新增页面
      */
+    @PreAuthorize("hasAnyAuthority('admin.create')")
     @GetMapping("/create")
     public String toAddAdminPage(){
         return ACCTION_ADD_USER;
@@ -71,8 +79,10 @@ public class AclAdminController {
     /**
      * 添加用户
      */
+    @PreAuthorize("hasAnyAuthority('admin.create')")
     @PostMapping("/save")
-    public String addAdmin(@Validated(Admin.class) Admin admin , Model model){
+    public String addAdmin(@Validated Admin admin , Model model){
+        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
         aclAdminService.insert(admin);
         model.addAttribute("messagePage", "用户添加成功");
         return PAGE_SUCCESS;
@@ -81,6 +91,7 @@ public class AclAdminController {
     /**
      * 修改用户
      */
+    @PreAuthorize("hasAnyAuthority('admin.edit')")
     @GetMapping("/edit/{id}")
     public String toEditAdmin(@PathVariable Long id , Model model){
         Admin admin = aclAdminService.getById(id);
@@ -91,8 +102,9 @@ public class AclAdminController {
     /**
      * 提交修改用户信息
      */
+    @PreAuthorize("hasAnyAuthority('admin.edit')")
     @PostMapping("/update")
-    public String updateAdmin(@Validated(Admin.class) Admin admin, Model model){
+    public String updateAdmin(@Validated Admin admin, Model model){
         aclAdminService.update(admin);
         model.addAttribute("messagePage", "用户修改成功");
         return PAGE_SUCCESS;
@@ -101,6 +113,7 @@ public class AclAdminController {
     /**
      * 删除用户
      */
+    @PreAuthorize("hasAnyAuthority('admin.delete')")
     @GetMapping("/delete/{id}")
     public String deleteAdmin(@PathVariable("id") Long id){
         aclAdminService.delete(id);
@@ -111,6 +124,7 @@ public class AclAdminController {
      * 上传头像页面
      *
      */
+    @PreAuthorize("hasAnyAuthority('admin.edit')")
     @GetMapping("/uploadShow/{id}")
     public String toUploadAvatarPage(@PathVariable("id") Long id,Model model){
         model.addAttribute("id", id);
@@ -121,6 +135,7 @@ public class AclAdminController {
      * 上传头像
      */
     @PostMapping("/upload/{id}")
+    @PreAuthorize("hasAnyAuthority('admin.edit')")
     public String uploadAvatar(@PathVariable("id") Long id,
                                @RequestParam("file") MultipartFile multipartFile,
                                Model model) throws IOException {
@@ -145,6 +160,7 @@ public class AclAdminController {
     /**
      * 给用户分配角色
      */
+    @PreAuthorize("hasAnyAuthority('admin.assign')")
     @GetMapping("/assignShow/{id}")
     public String assignShow(@PathVariable("id") Long id,Model model){
         //1.将adminId存到请求域中
@@ -158,6 +174,7 @@ public class AclAdminController {
     }
 
     @PostMapping("/assignRole")
+    @PreAuthorize("hasAnyAuthority('admin.assign')")
     public String assignRole(@RequestParam("roleIds") List<Long> roleIds,
                              @RequestParam("adminId") Long adminId,
                              Model model) {

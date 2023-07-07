@@ -17,4 +17,8 @@ public interface AclPermissionService extends BaseService<Permission> {
 //    void saveAssignPermissionByRoleIdAndPermissionIds(Long roleId, List<Long> permissionIds);
 
     void assignPermission(Long roleId, List<Long> permissionIds);
+
+    List<Permission> findPermissionListByAdminIdToCode(Long id);
+
+    List<Permission> findAllCode();
 }

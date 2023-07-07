@@ -7,6 +7,7 @@ import com.auto.entity.pojo.ResultZNodesInfo;
 import com.auto.service.AclPermissionService;
 import com.auto.service.AclRoleService;
 import com.github.pagehelper.PageInfo;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -44,6 +45,7 @@ public class AclRoleController {
         return INDEX_PAGE;
     }
 
+    @PreAuthorize("hasAnyAuthority('role.show')")
     @RequestMapping
     public String findRolePage(Model model, @RequestParam Map<String,String> filters){
         //清理分页缓存
@@ -53,12 +55,13 @@ public class AclRoleController {
         model.addAttribute("filters", filters);
         return INDEX_VIEW;
     }
-
+    @PreAuthorize("hasAnyAuthority('role.create')")
     @GetMapping("/create")
     public String toAddRole(){
         return ADD_ROLE_PAGE;
     }
 
+    @PreAuthorize("hasAnyAuthority('role.create')")
     @PostMapping("/save")
     public String saveAddRole(@Validated(Role.class) Role role, Model model){
         aclRoleService.insert(role);
@@ -66,6 +69,7 @@ public class AclRoleController {
         return PAGE_SUCCESS;
     }
 
+    @PreAuthorize("hasAnyAuthority('role.edit')")
     @GetMapping("/edit/{id}")
     public String toEditRole(@PathVariable("id") Long id,Model model){
         Role role = aclRoleService.getById(id);
@@ -73,6 +77,7 @@ public class AclRoleController {
         return ROLE_UPDATE_PAGE;
     }
 
+    @PreAuthorize("hasAnyAuthority('role.edit')")
     @PostMapping("/update")
     public String updateRole(@Validated(Role.class) Role role , Model model){
         aclRoleService.update(role);
@@ -80,6 +85,7 @@ public class AclRoleController {
         return PAGE_SUCCESS;
     }
 
+    @PreAuthorize("hasAnyAuthority('role.delete')")
     @GetMapping("/delete/{id}")
     public String deleteRole(@PathVariable("id") Long id){
         aclRoleService.delete(id);
@@ -89,6 +95,7 @@ public class AclRoleController {
     /**
      * 给角色分配权限
      */
+    @PreAuthorize("hasAnyAuthority('role.assign')")
     @RequestMapping("/assignShow/{id}")
     public String assignShow(@PathVariable("id") Long roleId, Model model){
 
@@ -103,6 +110,7 @@ public class AclRoleController {
         return PAGE_ASSIGN_SHOW;
     }
 
+    @PreAuthorize("hasAnyAuthority('role.assign')")
     @PostMapping("/assignPermission")
     public String saveAssignPermission(@RequestParam("roleId") Long roleId,
                                        @RequestParam("permissionIds") List<Long> permissionIds,

@@ -7,6 +7,7 @@ import com.auto.en.HouseStatus;
 import com.auto.entity.*;
 import com.auto.service.*;
 import com.github.pagehelper.PageInfo;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -50,6 +51,7 @@ public class HouseController {
 
     //加@RequestParamter 是防止Map被当成逻辑视图
     @RequestMapping
+    @PreAuthorize("hasAnyAuthority('house.show')")
     public String toHousePage(@RequestParam Map<String,String> filters, Model model){
         //1.分页搜索房源列表 并存到请求域中
         PageInfo<House> page = houseService.findPage(filters);
@@ -91,7 +93,9 @@ public class HouseController {
     /**
      * 新增房源信息
      */
+
     @GetMapping("/create")
+    @PreAuthorize("hasAnyAuthority('house.create')")
     public String toAddPage(Model model){
         //查询房源初始化信息储存到model
         extractedHouseView(model);
@@ -101,6 +105,7 @@ public class HouseController {
     /**
      * 保存添加房源信息
      */
+    @PreAuthorize("hasAnyAuthority('house.createq')")
     @PostMapping("/save")
     public String save(House house,Model model){
         //未发布
@@ -114,6 +119,7 @@ public class HouseController {
      * 根据id修改
      */
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasAnyAuthority('house.edit')")
     public String toEditPage(@PathVariable("id") Long id,Model model) {
         House house = houseService.getById(id);
         model.addAttribute("house",house);
@@ -125,6 +131,7 @@ public class HouseController {
      * 保存修改数据
      */
     @PostMapping("/update")
+    @PreAuthorize("hasAnyAuthority('house.edit')")
     public String update(House house,Model model){
         houseService.update(house);
         model.addAttribute("messagePage", "修改房源信息成功");
@@ -135,6 +142,7 @@ public class HouseController {
      *根据id删除
      */
     @GetMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('house.delete')")
     public String delete(@PathVariable("id") Long id){
         houseService.delete(id);
         return REDIRECT_ACTION_HOUSE_DELETE;
@@ -144,6 +152,7 @@ public class HouseController {
      * 新增发布
      */
     @GetMapping("/publish/{id}/{status}")
+    @PreAuthorize("hasAnyAuthority('house.publish')")
     public String publish(@PathVariable("id") Long id,@PathVariable("status") Integer status){
         House house = new House();
         house.setId(id);

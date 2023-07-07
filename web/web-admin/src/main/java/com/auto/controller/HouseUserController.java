@@ -3,6 +3,7 @@ package com.auto.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.auto.entity.HouseUser;
 import com.auto.service.HouseUserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +29,7 @@ public class HouseUserController {
      * 到新新增房东页面
      */
     @GetMapping("/create")
+    @PreAuthorize("hasAnyAuthority('house.editUser')")
     public String create(HouseUser houseUser, Model model){
         model.addAttribute("houseUser",houseUser);
         return PAGE_CREATE;
@@ -51,6 +53,7 @@ public class HouseUserController {
      */
 
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasAnyAuthority('house.editUser')")
     public String edit(@PathVariable("id") Long id, Model model){
         HouseUser houseUser = houseUserService.getById(id);
         model.addAttribute("houseUser",houseUser);
@@ -72,6 +75,7 @@ public class HouseUserController {
      * 删除房东信息
      */
     @GetMapping("/delete/{houseId}/{id}")
+    @PreAuthorize("hasAnyAuthority('house.editUser')")
     public String delete(@PathVariable("houseId") Long houseId,@PathVariable("id") Long id){
         houseUserService.delete(id);
         return SHOW_ACTION + houseId;

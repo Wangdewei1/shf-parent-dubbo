@@ -5,6 +5,7 @@ import com.auto.entity.Admin;
 import com.auto.entity.HouseBroker;
 import com.auto.service.AclAdminService;
 import com.auto.service.HouseBrokerService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +39,7 @@ public class HouseBrokerController {
      * @return
      */
     @GetMapping("/create")
+    @PreAuthorize("hasAnyAuthority('house.editBroker')")
     public String toHouseBrokerPage(@RequestParam("houseId") Long houseId, Model model){
         //1.查询出不是当前房源的经纪人列表 并存到请求域中
         List<Admin> adminList = aclAdminService.findNotAdminListByHouseId(houseId);
@@ -71,6 +73,7 @@ public class HouseBrokerController {
      */
 
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasAnyAuthority('house.editBroker')")
     public String edit(@PathVariable("id") Long id, Model model){
         //1. 列出经纪人列表:不包含当前房源已关联的那些admin(除了当前id表示的这条经纪人数据)
         //1.1 根据id查询出当前房源经纪人信息
@@ -94,6 +97,7 @@ public class HouseBrokerController {
      * @return
      */
     @PostMapping("/update")
+    @PreAuthorize("hasAnyAuthority('house.editBroker')")
     public String update(HouseBroker houseBroker,Model model){
         //此时houseBroker中有俩属性:id(经纪人数据的id字段,就是作为修改的条件),brokerId是要修改成经纪人的那个用户的id
         //2. 根据用户的id查询用户信息
@@ -115,6 +119,7 @@ public class HouseBrokerController {
      * 删除经纪人
      */
     @RequestMapping("/delete/{houseId}/{id}")
+    @PreAuthorize("hasAnyAuthority('house.editBroker')")
     public String delete(@PathVariable("houseId") Long houseId,@PathVariable("id") Long id){
         houseBrokerService.delete(id);
 

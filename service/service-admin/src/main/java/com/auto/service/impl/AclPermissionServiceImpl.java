@@ -195,6 +195,26 @@ public class AclPermissionServiceImpl extends BaseServiceImpl<Permission> implem
         }
     }
 
+
+    /**
+     * 根据用户id查询 权限列表
+     * @param id
+     * @return
+     */
+    @Override
+    public List<Permission> findPermissionListByAdminIdToCode(Long id) {
+        return aclPermissionMapper.findPermissionListByAdminIdToCode(id);
+    }
+
+    /**
+     * 查询所有权限码
+     * @return
+     */
+    @Override
+    public List<Permission> findAllCode() {
+        return aclPermissionMapper.findAllCode();
+    }
+
     /**
      * 递归查询所有子菜单
      *

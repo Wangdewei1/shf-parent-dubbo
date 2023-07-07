@@ -41,7 +41,19 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         //3.如果用户存在
         //3.1就将用户密码交给springSecurity进行校验出，进行校验处理
         //3.2查询当前用户的所有权限
-        List<Permission> permissionList = aclPermissionService.findPermissionListByAdminId(admin.getId());
+
+        List<Permission> permissionList;
+        if (1 == admin.getId()){
+            //如果等于1,查询所有权限
+            permissionList = aclPermissionService.findAll();
+        } else {
+            //否则根据用户id查询
+            permissionList = aclPermissionService.findPermissionListByAdminIdToCode(admin.getId());
+        }
+
+
+        //3.3查询当前用户的权限验证
+
         //4.因为SpringSecurity中的User 需要集合的参数是 GrantedAuthority
         //4.1所以我们要转成这个集合
         List<GrantedAuthority> grantedAuthorityList = new ArrayList<>();
@@ -50,7 +62,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             //如果不为空 则映射成一个新的GrantedAuthority集合
             grantedAuthorityList = permissionList.stream()
                     //保留 权限码不为空的权限
-                    .filter(permission -> permission.getCode() != null && "".equals(permission.getCode()))
+                    .filter(permission -> permission.getCode() != null && !"".equals(permission.getCode()))
                     .map(permission ->
                          new SimpleGrantedAuthority(permission.getCode())
                     ).collect(Collectors.toList());

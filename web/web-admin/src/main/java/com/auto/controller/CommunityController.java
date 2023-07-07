@@ -6,6 +6,7 @@ import com.auto.entity.Dict;
 import com.auto.service.CommunityService;
 import com.auto.service.DictService;
 import com.github.pagehelper.PageInfo;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,7 @@ public class CommunityController {
 
     //获取小区列表
     @RequestMapping
+    @PreAuthorize("hasAnyAuthority('community.show')")
     public String toCommunityPage(@RequestParam Map<String,String> filters, Model model){
 
         //1.根据字典编码获取beijing的所以区域
@@ -55,6 +57,7 @@ public class CommunityController {
 
     //新增小区
     @RequestMapping("/create")
+    @PreAuthorize("hasAnyAuthority('community.create')")
     public String toCreatePage(Model model){
         //1.
         List<Dict> dictList = dictService.findDictListByDicCode("beijing");
@@ -66,6 +69,7 @@ public class CommunityController {
 
     //保存小区信息
     @PostMapping("/save")
+    @PreAuthorize("hasAnyAuthority('community.create')")
     public String savaCommunity(Community community,Model model){
         communityService.insert(community);
         model.addAttribute("messagePage", "添加小区成功");
@@ -74,6 +78,7 @@ public class CommunityController {
 
     //修改小区
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasAnyAuthority('community.edit')")
     public String toEditPage(@PathVariable("id") Long id ,  Model model){
         //查询小区信息
         Community community = communityService.getById(id);
@@ -90,6 +95,7 @@ public class CommunityController {
     
     //保存修改小区信息
     @PostMapping("/update")
+    @PreAuthorize("hasAnyAuthority('community.edit')")
     public String updateCommunity(Community community,Model model){
         communityService.update(community);
         model.addAttribute("messagePage", "修改小区信息成功");
@@ -98,6 +104,7 @@ public class CommunityController {
 
     //删除小区信息
     @GetMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('community.delete')")
     public String deleteCommunity(@PathVariable("id") Long id){
         communityService.delete(id);
         return ACTION_COMMUNITY_DELETE;

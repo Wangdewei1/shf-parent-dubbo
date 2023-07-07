@@ -17,4 +17,8 @@ public interface AclPermissionMapper extends BaseMapper<Permission> {
     Permission findPermissionByParentIdAndName(@Param("parentId") Long parentId, @Param("name") String name);
 
     Integer findCountByParentId(Long id);
+
+    List<Permission> findPermissionListByAdminIdToCode(Long id);
+
+    List<Permission> findAllCode();
 }

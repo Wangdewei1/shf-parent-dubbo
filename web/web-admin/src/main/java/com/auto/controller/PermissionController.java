@@ -3,6 +3,7 @@ package com.auto.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.auto.entity.Permission;
 import com.auto.service.PermissionService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +39,7 @@ public class PermissionController {
      * @return
      */
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('permission.show')")
     public String index(Model model){
         List<Permission> permissionList = permissionService.findAll();
         model.addAttribute("list",permissionList);
@@ -48,6 +50,7 @@ public class PermissionController {
      *  到 新增菜单页面
      */
     @GetMapping("/create")
+    @PreAuthorize("hasAnyAuthority('permission.create')")
     public String create(Permission permission,Model model){
         model.addAttribute("permission",permission);
         return PAGE_CREATE;
@@ -68,6 +71,7 @@ public class PermissionController {
      * 删除
      */
     @GetMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('permission.delete')")
     public String delete(@PathVariable("id") Long id){
         permissionService.delete(id);
         return LIST_ACTION;
@@ -77,6 +81,7 @@ public class PermissionController {
      * 显示修改页面
      */
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasAnyAuthority('permission.edit')")
     public String edit(@PathVariable("id") Long id,Model model){
         Permission permission = permissionService.getById(id);
         model.addAttribute("permission",permission);
