@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 /**
  * springSecurity 配置类
@@ -18,6 +19,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private AccessDeniedHandler accessDeniedHandler;
 
 
     /**
@@ -78,6 +82,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         //关闭跨域请求伪造
         http.csrf().disable();
+
+        //配置访问拒绝，处理器
+        http.exceptionHandling().accessDeniedHandler(accessDeniedHandler);
     }
 
 

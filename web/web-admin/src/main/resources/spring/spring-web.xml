@@ -83,4 +83,6 @@
     <mvc:view-controller path="/dict" view-name="dict/index"></mvc:view-controller>
     <!--springSecurity 权限登入页-->
     <mvc:view-controller path="/loginPage" view-name="frame/login"></mvc:view-controller>
+    <!--springSecurity 权限不足页-->
+    <mvc:view-controller path="/auth" view-name="frame/auth"></mvc:view-controller>
 </beans>
