@@ -1,88 +1,88 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.auto.mapper.AclRoleMapper">
-    <!--所有AclRole字段-->
-    <sql id="Base_All_Role_Field">
-        id , role_name , role_code , description , create_time , update_time , is_deleted
-    </sql>
-    <!--查询已封装字段-->
-    <sql id="Base_Exist_Field">
-        role_name , role_code , description
-    </sql>
-    <!--查询所有角色-->
-    <!--concat是字符串拼接 ， （）中用，分割，不能用加号 ，用+就变成  select count(0)了-->
-    <select id="findPage" resultType="Role">
-        SELECT
-        <include refid="Base_All_Role_Field"></include>
-        FROM
-        acl_role
-        <where>
-            <if test="roleName != null and roleName != ''">
-                role_name LIKE concat('%' , #{roleName} , '%')
-            </if>
-            and is_deleted = 0
-        </where>
-        order by create_time desc
-    </select>
+<!--<?xml version="1.0" encoding="UTF-8" ?>-->
+<!--<!DOCTYPE mapper-->
+<!--        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"-->
+<!--        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
+<!--<mapper namespace="com.auto.mapper.AclRoleMapper">-->
+<!--    &lt;!&ndash;所有AclRole字段&ndash;&gt;-->
+<!--    <sql id="Base_All_Role_Field">-->
+<!--        id , role_name , role_code , description , create_time , update_time , is_deleted-->
+<!--    </sql>-->
+<!--    &lt;!&ndash;查询已封装字段&ndash;&gt;-->
+<!--    <sql id="Base_Exist_Field">-->
+<!--        role_name , role_code , description-->
+<!--    </sql>-->
+<!--    &lt;!&ndash;查询所有角色&ndash;&gt;-->
+<!--    &lt;!&ndash;concat是字符串拼接 ， （）中用，分割，不能用加号 ，用+就变成  select count(0)了&ndash;&gt;-->
+<!--    <select id="findPage" resultType="Role">-->
+<!--        SELECT-->
+<!--        <include refid="Base_All_Role_Field"></include>-->
+<!--        FROM-->
+<!--        acl_role-->
+<!--        <where>-->
+<!--            <if test="roleName != null and roleName != ''">-->
+<!--                role_name LIKE concat('%' , #{roleName} , '%')-->
+<!--            </if>-->
+<!--            and is_deleted = 0-->
+<!--        </where>-->
+<!--        order by create_time desc-->
+<!--    </select>-->
 
-    <!--根据分页查询-->
-    <select id="findAll" resultType="Role">
-        SELECT
-        <include refid="Base_All_Role_Field"></include>
-        FROM
-        acl_role
-        WHERE is_deleted = 0
-    </select>
+<!--    &lt;!&ndash;根据分页查询&ndash;&gt;-->
+<!--    <select id="findAll" resultType="Role">-->
+<!--        SELECT-->
+<!--        <include refid="Base_All_Role_Field"></include>-->
+<!--        FROM-->
+<!--        acl_role-->
+<!--        WHERE is_deleted = 0-->
+<!--    </select>-->
 
-    <!--新增角色-->
-    <insert id="insert">
-        INSERT INTO acl_role(role_name,role_code,description)
-        VALUES
-        (#{roleName},#{roleCode},#{description})
-    </insert>
+<!--    &lt;!&ndash;新增角色&ndash;&gt;-->
+<!--    <insert id="insert">-->
+<!--        INSERT INTO acl_role(role_name,role_code,description)-->
+<!--        VALUES-->
+<!--        (#{roleName},#{roleCode},#{description})-->
+<!--    </insert>-->
 
-    <!--根据id获取角色-->
-    <select id="getById" resultType="Role">
-        SELECT
-        <include refid="Base_All_Role_Field"></include>
-        FROM
-        acl_role
-        where id = #{id}
-        AND
-        is_deleted = 0
-    </select>
+<!--    &lt;!&ndash;根据id获取角色&ndash;&gt;-->
+<!--    <select id="getById" resultType="Role">-->
+<!--        SELECT-->
+<!--        <include refid="Base_All_Role_Field"></include>-->
+<!--        FROM-->
+<!--        acl_role-->
+<!--        where id = #{id}-->
+<!--        AND-->
+<!--        is_deleted = 0-->
+<!--    </select>-->
 
-    <!--修改角色-->
-    <update id="update">
-        UPDATE acl_role
-        <set>
-            <if test="roleName != null and roleName != ''">
-                role_name = #{roleName},
-            </if>
-            <if test="roleCode != null and roleCode != ''">
-                role_code = #{roleCode},
-            </if>
-            <if test="description != null and description != ''">
-                description = #{description},
-            </if>
-        </set>
-        WHERE id = #{id}
-        AND
-        is_deleted = 0
-    </update>
+<!--    &lt;!&ndash;修改角色&ndash;&gt;-->
+<!--    <update id="update">-->
+<!--        UPDATE acl_role-->
+<!--        <set>-->
+<!--            <if test="roleName != null and roleName != ''">-->
+<!--                role_name = #{roleName},-->
+<!--            </if>-->
+<!--            <if test="roleCode != null and roleCode != ''">-->
+<!--                role_code = #{roleCode},-->
+<!--            </if>-->
+<!--            <if test="description != null and description != ''">-->
+<!--                description = #{description},-->
+<!--            </if>-->
+<!--        </set>-->
+<!--        WHERE id = #{id}-->
+<!--        AND-->
+<!--        is_deleted = 0-->
+<!--    </update>-->
 
-    <!--根据id删除角色-->
-    <!--由于mybatis版问题，所以在标签里 不能获取到id  把id改成_parameter就可以正常访问了-->
-    <update id="delete">
-        UPDATE acl_role
-        <set>
-            <if test="_parameter != null and _parameter != ''">
-                is_deleted = 1
-            </if>
-        </set>
-        WHERE id = #{id}
-    </update>
+<!--    &lt;!&ndash;根据id删除角色&ndash;&gt;-->
+<!--    &lt;!&ndash;由于mybatis版问题，所以在标签里 不能获取到id  把id改成_parameter就可以正常访问了&ndash;&gt;-->
+<!--    <update id="delete">-->
+<!--        UPDATE acl_role-->
+<!--        <set>-->
+<!--            <if test="_parameter != null and _parameter != ''">-->
+<!--                is_deleted = 1-->
+<!--            </if>-->
+<!--        </set>-->
+<!--        WHERE id = #{id}-->
+<!--    </update>-->
 
-</mapper>
+<!--</mapper>-->

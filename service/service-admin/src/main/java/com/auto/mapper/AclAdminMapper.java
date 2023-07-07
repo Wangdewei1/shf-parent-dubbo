@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface AclAdminMapper extends BaseMapper<Admin> {
     List<Admin> findNotAdminListByHouseId(Long houseId);
+
+    Admin getUserByUsername(String username);
 }

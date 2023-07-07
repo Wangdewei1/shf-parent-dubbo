@@ -1,94 +1,106 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.auto.mapper.AclAdminMapper">
+<!--<?xml version="1.0" encoding="UTF-8" ?>-->
+<!--<!DOCTYPE mapper-->
+<!--        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"-->
+<!--        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
+<!--<mapper namespace="com.auto.mapper.AclAdminMapper">-->
 
-    <!--用户所有字段-->
-    <sql id="Base_User_Filed">
-        id , username , password , name , phone , head_url , description , create_time , update_time , is_deleted
-    </sql>
+<!--    &lt;!&ndash;用户所有字段&ndash;&gt;-->
+<!--    <sql id="Base_User_Filed">-->
+<!--        id , username , password , name , phone , head_url , description , create_time , update_time , is_deleted-->
+<!--    </sql>-->
 
-    <!--用户分页条件-->
-    <sql id="Page_Where">
-        <where>
-            <if test="username != null and username != ''">
-                username LIKE CONCAT('%' , #{username} , '%')
-            </if>
-            <if test="phone != null and phone != ''">
-                and phone LIKE CONCAT(#{phone} , '%')
-            </if>
-            <if test="name != null and name != ''">
-                and name LIKE CONCAT('%' , #{name} , '%')
-            </if>
-            <if test="createTimeBegin != null and createTimeBegin != ''">
-                and create_time > #{createTimeBegin}
-            </if>
-            <if test="createTimeEnd != null and createTimeEnd != ''">
-                and create_time &lt; #{createTimeEnd}
-            </if>
-            and is_deleted = 0
-        </where>
-    </sql>
+<!--    &lt;!&ndash;用户分页条件&ndash;&gt;-->
+<!--    <sql id="Page_Where">-->
+<!--        <where>-->
+<!--            <if test="username != null and username != ''">-->
+<!--                username LIKE CONCAT('%' , #{username} , '%')-->
+<!--            </if>-->
+<!--            <if test="phone != null and phone != ''">-->
+<!--                and phone LIKE CONCAT(#{phone} , '%')-->
+<!--            </if>-->
+<!--            <if test="name != null and name != ''">-->
+<!--                and name LIKE CONCAT('%' , #{name} , '%')-->
+<!--            </if>-->
+<!--            <if test="createTimeBegin != null and createTimeBegin != ''">-->
+<!--                and create_time > #{createTimeBegin}-->
+<!--            </if>-->
+<!--            <if test="createTimeEnd != null and createTimeEnd != ''">-->
+<!--                and create_time &lt; #{createTimeEnd}-->
+<!--            </if>-->
+<!--            and is_deleted = 0-->
+<!--        </where>-->
+<!--    </sql>-->
 
-    <!--根据分页条件  查询-->
-    <select id="findPage" resultType="Admin">
-        SELECT
-        <include refid="Base_User_Filed"></include>
-        FROM
-        acl_admin
-        <include refid="Page_Where"></include>
-        order by create_time desc
-    </select>
+<!--    &lt;!&ndash;根据分页条件  查询&ndash;&gt;-->
+<!--    <select id="findPage" resultType="Admin">-->
+<!--        SELECT-->
+<!--        <include refid="Base_User_Filed"></include>-->
+<!--        FROM-->
+<!--        acl_admin-->
+<!--        <include refid="Page_Where"></include>-->
+<!--        order by create_time desc-->
+<!--    </select>-->
 
-    <!--新增用户-->
-    <insert id="insert">
-        INSERT INTO acl_admin(username , password , name , phone)
-        VALUES(#{username} , #{password} , #{name} , #{phone})
-    </insert>
+<!--    &lt;!&ndash;新增用户&ndash;&gt;-->
+<!--    <insert id="insert">-->
+<!--        INSERT INTO acl_admin(username , password , name , phone)-->
+<!--        VALUES(#{username} , #{password} , #{name} , #{phone})-->
+<!--    </insert>-->
 
-    <!--根据id查询用户  回显-->
-    <select id="getById" resultType="Admin">
-        SELECT
-        <include refid="Base_User_Filed"></include>
-        FROM
-        acl_admin
-        <where>
-            <if test="_parameter != null and _parameter != ''">
-                id = #{id}
-            </if>
-        </where>
-    </select>
+<!--    &lt;!&ndash;根据id查询用户  回显&ndash;&gt;-->
+<!--    <select id="getById" resultType="Admin">-->
+<!--        SELECT-->
+<!--        <include refid="Base_User_Filed"></include>-->
+<!--        FROM-->
+<!--        acl_admin-->
+<!--        <where>-->
+<!--            <if test="_parameter != null and _parameter != ''">-->
+<!--                id = #{id}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--    </select>-->
 
-    <!--更新用户-->
-    <update id="update">
-        UPDATE
-        acl_admin
-        <set>
-            <if test="username != null and username != ''">
-                username = #{username},
-            </if>
-            <if test="phone != null and phone != ''">
-                phone = #{phone},
-            </if>
-            <if test="password != null and password != ''">
-                password = #{password},
-            </if>
-            <if test="name != null and name != ''">
-                name = #{name},
-            </if>
-        </set>
-        WHERE id = #{id}
-        AND
-        is_deleted = 0
-    </update>
+<!--    &lt;!&ndash;更新用户&ndash;&gt;-->
+<!--    <update id="update">-->
+<!--        UPDATE-->
+<!--        acl_admin-->
+<!--        <set>-->
+<!--            <if test="username != null and username != ''">-->
+<!--                username = #{username},-->
+<!--            </if>-->
+<!--            <if test="phone != null and phone != ''">-->
+<!--                phone = #{phone},-->
+<!--            </if>-->
+<!--            <if test="password != null and password != ''">-->
+<!--                password = #{password},-->
+<!--            </if>-->
+<!--            <if test="name != null and name != ''">-->
+<!--                name = #{name},-->
+<!--            </if>-->
+<!--        </set>-->
+<!--        WHERE id = #{id}-->
+<!--        AND-->
+<!--        is_deleted = 0-->
+<!--    </update>-->
 
-    <!--删除用户-->
-    <update id="delete">
-        UPDATE acl_admin
-        <set>
-            is_deleted = 1
-        </set>
-        WHERE id = #{id}
-    </update>
-</mapper>
+<!--    &lt;!&ndash;删除用户&ndash;&gt;-->
+<!--    <update id="delete">-->
+<!--        UPDATE acl_admin-->
+<!--        <set>-->
+<!--            is_deleted = 1-->
+<!--        </set>-->
+<!--        WHERE id = #{id}-->
+<!--    </update>-->
+
+<!--    &lt;!&ndash;根据用户名 查询用户信息&ndash;&gt;-->
+<!--    <select id="getUserByUsername" resultType="Admin">-->
+<!--        SELECT-->
+<!--        <include refid="Base_User_Filed"></include>-->
+<!--        FROM-->
+<!--        acl_admin-->
+<!--        WHERE-->
+<!--        username = #{username}-->
+<!--        AND-->
+<!--        is_deleted = 0-->
+<!--    </select>-->
+<!--</mapper>-->

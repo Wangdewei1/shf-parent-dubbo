@@ -107,4 +107,15 @@
         and is_deleted = 0
     </select>
 
+    <!--根据用户名 查询用户信息-->
+    <select id="getUserByUsername" resultType="Admin">
+        SELECT
+        <include refid="Base_User_Filed"></include>
+        FROM
+        acl_admin
+        WHERE
+        username = #{username}
+        AND
+        is_deleted = 0
+    </select>
 </mapper>

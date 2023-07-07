@@ -51,5 +51,15 @@ public class AclAdminServiceImpl extends BaseServiceImpl<Admin> implements AclAd
         }
     }
 
+    /**
+     * 根据用户 查询用户Admin
+     * @param username
+     * @return
+     */
+    @Override
+    public Admin getUserByUsername(String username) {
+        return aclAdminMapper.getUserByUsername(username);
+    }
+
 
 }

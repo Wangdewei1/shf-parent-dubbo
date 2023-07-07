@@ -7,6 +7,8 @@ import com.auto.entity.Role;
 import com.auto.service.AclAdminService;
 import com.auto.service.AclPermissionService;
 import com.auto.service.AclRoleService;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,16 +34,18 @@ public class IndexController {
     @RequestMapping("/")
     public String index(Model model){
 
-        //1.查询用户信息 TODO 未实现动态查询用户
-        Long adminId = 1L;
-        Admin admin = aclAdminService.getById(adminId);
+        //1.查询用户信息
+        //获取SpringSecurity中的 User对象
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        //根据用户名查询 用户信息
+        Admin admin = aclAdminService.getUserByUsername(user.getUsername());
         model.addAttribute("admin", admin);
         //2.查询所有角色列表
-        List<Role> roleList = aclRoleService.findRoleListByAdminId(adminId);
+        List<Role> roleList = aclRoleService.findRoleListByAdminId(admin.getId());
         model.addAttribute("roleList", roleList);
         //3.根据用户Id查询所有权限列表
 
-        List<Permission> permissionList = aclPermissionService.findPermissionListByAdminId(adminId);
+        List<Permission> permissionList = aclPermissionService.findPermissionListByAdminId(admin.getId());
         model.addAttribute("permissionList", permissionList);
         return INDEX_PAGE;
     }

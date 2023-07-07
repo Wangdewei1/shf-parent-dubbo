@@ -9,4 +9,6 @@ public interface AclAdminService extends BaseService<Admin> {
     List<Admin> findNotAdminListByHouseId(Long houseId);
 
     void assignRole(List<Long> roleIds, Long adminId);
+
+    Admin getUserByUsername(String username);
 }
